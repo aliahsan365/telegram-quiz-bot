@@ -14,18 +14,8 @@ class EnquestesVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by EnquestesParser#expr.
-    def visitExpr(self, ctx:EnquestesParser.ExprContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by EnquestesParser#term.
-    def visitTerm(self, ctx:EnquestesParser.TermContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by EnquestesParser#atom.
-    def visitAtom(self, ctx:EnquestesParser.AtomContext):
+    # Visit a parse tree produced by EnquestesParser#pregunta.
+    def visitPregunta(self, ctx:EnquestesParser.PreguntaContext):
         return self.visitChildren(ctx)
 
 

@@ -1,14 +1,11 @@
 grammar Enquestes;
-root : expr EOF ;
+root : pregunta EOF ;
+pregunta : PID PREGUNTA;
 
-expr : expr MES term | expr MENYS term | term;
-term : term MUL atom | term DIV atom | atom;
-atom : NUM;
 
+PID : 'P[0-9]+';
+PREGUNTA : 'PREGUNTA';
 NUM : [0-9]+ ;
-ID :  [a-z]+;
-MES : '+' ;
-MENYS : '-';
-MUL : '*';
-DIV : '/';
+WORD : '[a-zA-Z]+';
+PUNTOS : ':';
 WS : [ \n]+ -> skip ;

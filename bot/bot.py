@@ -1,7 +1,8 @@
 import telegram
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
-
+import pickle
+print(pickle.__doc__)
 
 # declara una constant amb el access token que llegeix de token.txt
 TOKEN = open('token.txt').read().strip()
