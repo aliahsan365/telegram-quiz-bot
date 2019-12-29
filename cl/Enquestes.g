@@ -1,22 +1,15 @@
 grammar Enquestes;
-root : bloc FINAL EOF ;
-
-bloc: (pregunta|resposta|element|alternativa|enquesta)*;
-
-
+root : blocs FINAL EOF ;
+blocs: (pregunta|resposta|element|alternativa|enquesta)*;
 pregunta : PID PUNTS PREGUNTA PARAULES* SIGNEPREGUNTA;
-
 resposta : RID PUNTS RESPOSTA opcio*;
 opcio : NUMERO PUNTS PARAULES* PUNTCOMA;
-
 element: IID PUNTS ELEMENT relacio*;
 relacio: PID FLETXA RID ;
-
-alternativa: AID  PUNTS ALTERNATIVA;
-implications: IID PUNTS CE blocrespostaelement CD;
-blocrespostaelement: PE  (respostaelement | respostaelement COMA )* PR;
+alternativa: AID  PUNTS ALTERNATIVA implications;
+implications: IID CE blocrespostaelement CD;
+blocrespostaelement: (respostaelement COMA| respostaelement)*;
 respostaelement: PE NUMERO COMA IID PR;
-
 enquesta : E PUNTS ENQUESTA IID*;
 
 AID : 'A'[0-9]+;
@@ -37,7 +30,6 @@ ALTERNATIVA : 'ALTERNATIVA';
 PUNTCOMA : ';';
 FLETXA : '->';
 NUMERO : [0-9]+ ;
-
 FINAL : 'END';
 PARAULES : [a-zA-Z]+;
 PUNTS : ':';
