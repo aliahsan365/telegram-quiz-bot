@@ -1,0 +1,1 @@
+P1: PREGUNTA Quants adults viuen a casa teva? R1: RESPOSTA 0: zero; 1: uno; P2: PREGUNTA Quants adults viuen a casa teva? R2: RESPOSTA 0: zero; 1: uno; END

@@ -1,8 +1,5 @@
 grammar Enquestes;
-root : bloc FINAL EOF ;
-
-bloc: (pregunta|resposta|element|alternativa|enquesta)*;
-
+root : (pregunta|resposta)* FINAL EOF ;
 
 pregunta : PID PUNTS PREGUNTA PARAULES* SIGNEPREGUNTA;
 
@@ -13,8 +10,7 @@ element: IID PUNTS ELEMENT relacio*;
 relacio: PID FLETXA RID ;
 
 alternativa: AID  PUNTS ALTERNATIVA;
-implications: IID PUNTS CE blocrespostaelement CD;
-blocrespostaelement: PE  (respostaelement | respostaelement COMA )* PR;
+implications: IID PUNTS CE respostaelement* CD;
 respostaelement: PE NUMERO COMA IID PR;
 
 enquesta : E PUNTS ENQUESTA IID*;
