@@ -1,8 +1,29 @@
 import telegram
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
+
 import pickle
 print(pickle.__doc__)
+
+import networkx as nx
+import numpy as np
+import matplotlib.pyplot as plt
+
+#sumalista para el piechart
+
+def sum_all(l):
+    res = 0
+    for x in l:
+        res = res + x
+    return res
+
+#saca el maximo para piechart
+def max_all(l):
+    max = l[0];
+    for x in l:
+        if x > max:
+            max = x
+    return max
 
 # declara una constant amb el access token que llegeix de token.txt
 TOKEN = open('token.txt').read().strip()

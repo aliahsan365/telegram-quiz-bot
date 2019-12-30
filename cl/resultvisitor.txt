@@ -1,0 +1,290 @@
+? 3
+root
+[24]
+END
+<EOF>
+16
+blocs
+[28 24]
+[28 24]
+[29 24]
+[30 24]
+[30 24]
+[28 24]
+[29 24]
+[30 24]
+[28 24]
+[29 24]
+[30 24]
+[28 24]
+[29 24]
+[30 24]
+[31 24]
+[32 24]
+10
+pregunta
+P1
+:
+PREGUNTA
+Quants
+adults
+viuen
+a
+casa
+teva
+?
+10
+pregunta
+P2
+:
+PREGUNTA
+Quants
+menors
+vien
+a
+casa
+teva
+?
+7
+resposta
+R1
+:
+RESPOSTA
+[52 29 24]
+[52 29 24]
+[52 29 24]
+[52 29 24]
+4
+opcio
+0
+:
+zero
+;
+4
+opcio
+1
+:
+un
+;
+4
+opcio
+2
+:
+dos
+;
+6
+opcio
+3
+:
+mes
+de
+dos
+;
+4
+element
+I1
+:
+ITEM
+[71 30 24]
+3
+relacio
+P1
+->
+R1
+4
+element
+I2
+:
+ITEM
+[71 30 24]
+3
+relacio
+P2
+->
+R1
+10
+pregunta
+P3
+:
+PREGUNTA
+Com
+vas
+a
+la
+feina
+majoritariament
+?
+6
+resposta
+R3
+:
+RESPOSTA
+[52 29 24]
+[52 29 24]
+[52 29 24]
+4
+opcio
+1
+:
+caminant
+;
+5
+opcio
+2
+:
+en
+cotxe
+;
+6
+opcio
+3
+:
+en
+transport
+public
+;
+4
+element
+I3
+:
+ITEM
+[71 30 24]
+3
+relacio
+P3
+->
+R3
+7
+pregunta
+P4
+:
+PREGUNTA
+Utilitzes
+car
+sharing
+?
+5
+resposta
+R4
+:
+RESPOSTA
+[52 29 24]
+[52 29 24]
+4
+opcio
+1
+:
+Si
+;
+4
+opcio
+2
+:
+No
+;
+4
+element
+I4
+:
+ITEM
+[71 30 24]
+3
+relacio
+P4
+->
+R4
+10
+pregunta
+P5
+:
+PREGUNTA
+Quin
+mitja
+de
+transport
+utilitzes
+majoritariament
+?
+7
+resposta
+R5
+:
+RESPOSTA
+[52 29 24]
+[52 29 24]
+[52 29 24]
+[52 29 24]
+4
+opcio
+1
+:
+Tren
+;
+4
+opcio
+2
+:
+Bus
+;
+4
+opcio
+3
+:
+Metro
+;
+4
+opcio
+4
+:
+Altres
+;
+4
+element
+I5
+:
+ITEM
+[71 30 24]
+3
+relacio
+P5
+->
+R5
+4
+alternativa
+A1
+:
+ALTERNATIVA
+[84 31 24]
+4
+implications
+I3
+[
+[88 84 31 24]
+]
+3
+blocrespostaelement
+[91 88 84 31 24]
+,
+[94 88 84 31 24]
+5
+resporataelement
+(
+2
+,
+I4
+)
+5
+resporataelement
+(
+3
+,
+I5
+)
+6
+enquesta
+E
+:
+ENQUESTA
+I1
+I2
+I3
