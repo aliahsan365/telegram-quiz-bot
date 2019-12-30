@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 def render_graph(G):
     pos = nx.circular_layout(G)
 
-    nx.draw(G, pos, with_labels=True, font_weight='bold')
+    nx.draw(G, pos, with_labels=True, font_weight='bold',arrow =True)
     #plt.draw()
     plt.show()
 
@@ -65,6 +65,7 @@ class EnquestesVisitor(ParseTreeVisitor):
         IID = ctx.parentCtx.getChild(0).getText()
         PID = ctx.getChild(0).getText()
         RID = ctx.getChild(2).getText()
+
         self.G.add_edge(PID, RID, weight=IID, color='b')
         return self.visitChildren(ctx)
 
