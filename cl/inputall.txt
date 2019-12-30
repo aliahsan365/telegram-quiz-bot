@@ -22,7 +22,7 @@ P3 -> R3
 P4: PREGUNTA
 Utilitzes car sharing?
 R4: RESPOSTA
-1: Sí ;
+1: Si ;
 2: No ;
 I4: ITEM
 P4 -> R4
@@ -32,7 +32,7 @@ R5: RESPOSTA
 1: Tren ;
 2: Bus ;
 3: Metro ;
-4: Altres
+4: Altres ;
 I5: ITEM
 P5 -> R5
 A1: ALTERNATIVA
