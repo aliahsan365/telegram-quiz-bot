@@ -8,13 +8,33 @@ else:
 # This class defines a complete generic visitor for a parse tree produced by EnquestesParser.
 import networkx as nx
 import matplotlib.pyplot as plt
+import pickle
+
+def save_graph(G):
+    pickle_out = open("graph.pickle", "wb")
+
+    pickle.dump(G,pickle_out)
+    pickle_out.close()
+#TODO: todotest
+#FIXME: fixmetest
+#REVIEw: review
+def load_graph():
+    pickle_in = open("graph.pickle","rb")
+    Gin = pickle.load(pickle_in)
+    print(Gin.nodes,Gin.edges)
+
+
+
 
 def render_graph(G):
+    save_graph(G)
+
     pos = nx.circular_layout(G)
     nx.draw(G, pos, with_labels=True, font_weight='bold', arrow=True)
+    load_graph()
 
-    #plt.draw()
     plt.show()
+
 
 
 
@@ -26,6 +46,7 @@ class Resposta():
         self.punts = punts
         self.resposta = resposta
 
+#TODO: estrucutras para guardar el grafo.
 
 class EnquestesVisitor(ParseTreeVisitor):
 
@@ -75,7 +96,7 @@ class EnquestesVisitor(ParseTreeVisitor):
     def visitRelacio(self, ctx:EnquestesParser.RelacioContext):
 
         IID = ctx.parentCtx.getChild(0).getText()
-        print(IID)
+        #print(IID)
         PID = ctx.getChild(0).getText()
         RID = ctx.getChild(2).getText()
 
@@ -103,7 +124,7 @@ class EnquestesVisitor(ParseTreeVisitor):
     def visitRespostaelement(self, ctx:EnquestesParser.RespostaelementContext):
         OPC = ctx.getChild(1).getText()
         IID = ctx.getChild(3).getText()
-        print((OPC,IID))
+       #print((OPC,IID))
         #PID = "P3"
         #NO SE PUEDE USAR parent cuando no es tu padre inmediato
         #necesitamos una estrcutura aparte del grafo que nos haga de memoria

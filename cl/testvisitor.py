@@ -13,6 +13,7 @@ token_stream = CommonTokenStream(lexer)
 parser = EnquestesParser(token_stream)
 tree = parser.root()
 visitor = EnquestesVisitor()
+#TODO: leer el graph des de aqui
 visitor.visit(tree)
 
 
