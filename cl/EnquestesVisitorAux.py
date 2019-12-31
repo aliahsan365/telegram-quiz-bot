@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 def render_graph(G):
     pos = nx.circular_layout(G)
 
-    nx.draw(G, pos, with_labels=True, font_weight='bold')
+    nx.draw(G, pos, with_labels=True, font_weight='bold',arrow =True)
     #plt.draw()
     plt.show()
 
@@ -27,7 +27,6 @@ class EnquestesVisitor(ParseTreeVisitor):
 
     def visitRoot(self, ctx:EnquestesParser.RootContext):
         self.visitChildren(ctx)
-
         render_graph(self.G)
         return self.visitChildren(ctx)
 
@@ -47,7 +46,6 @@ class EnquestesVisitor(ParseTreeVisitor):
     # Visit a parse tree produced by EnquestesParser#resposta.
     def visitResposta(self, ctx:EnquestesParser.RespostaContext):
         self.G.add_node(ctx.getChild(0).getText())
-
         return self.visitChildren(ctx)
 
 
@@ -58,14 +56,18 @@ class EnquestesVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by EnquestesParser#element.
     def visitElement(self, ctx:EnquestesParser.ElementContext):
-
+        self.G.add_node(ctx.getChild(0).getText())
         return self.visitChildren(ctx)
 
 
     # Visit a parse tree produced by EnquestesParser#relacio.
     def visitRelacio(self, ctx:EnquestesParser.RelacioContext):
+        IID = ctx.parentCtx.getChild(2).getText()
+        print(IID)
+        PID = ctx.getChild(0).getText()
+        RID = ctx.getChild(2).getText()
 
-        self.G.add_edge()
+        self.G.add_edge(PID, RID, weight=IID, color='b')
         return self.visitChildren(ctx)
 
 
@@ -96,3 +98,6 @@ class EnquestesVisitor(ParseTreeVisitor):
 
 
 del EnquestesParser
+
+
+

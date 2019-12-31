@@ -11,11 +11,20 @@ import matplotlib.pyplot as plt
 
 def render_graph(G):
     pos = nx.circular_layout(G)
+    nx.draw(G, pos, with_labels=True, font_weight='bold', arrow=True)
 
-    nx.draw(G, pos, with_labels=True, font_weight='bold',arrow =True)
     #plt.draw()
     plt.show()
 
+
+
+#resposta : RID PUNTS RESPOSTA opcio*;
+#opcio : NUMERO PUNTS PARAULES* PUNTCOMA;
+class Resposta():
+    def __init__(self,rid,punts,resposta):
+        self.rid = rid
+        self.punts = punts
+        self.resposta = resposta
 
 
 class EnquestesVisitor(ParseTreeVisitor):
@@ -27,6 +36,8 @@ class EnquestesVisitor(ParseTreeVisitor):
 
     def visitRoot(self, ctx:EnquestesParser.RootContext):
         self.visitChildren(ctx)
+        self.G.add_node(ctx.getChild(1).getText())
+
         render_graph(self.G)
         return self.visitChildren(ctx)
 
@@ -56,16 +67,19 @@ class EnquestesVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by EnquestesParser#element.
     def visitElement(self, ctx:EnquestesParser.ElementContext):
-        self.G.add_node(ctx.getChild(0).getText())
+
         return self.visitChildren(ctx)
 
 
     # Visit a parse tree produced by EnquestesParser#relacio.
     def visitRelacio(self, ctx:EnquestesParser.RelacioContext):
+
         IID = ctx.parentCtx.getChild(0).getText()
+        print(IID)
         PID = ctx.getChild(0).getText()
         RID = ctx.getChild(2).getText()
 
+        #self.G.add_edge(PID, RID, label = IID, color='b')
         self.G.add_edge(PID, RID, weight=IID, color='b')
         return self.visitChildren(ctx)
 
@@ -87,6 +101,15 @@ class EnquestesVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by EnquestesParser#respostaelement.
     def visitRespostaelement(self, ctx:EnquestesParser.RespostaelementContext):
+        OPC = ctx.getChild(1).getText()
+        IID = ctx.getChild(3).getText()
+        print((OPC,IID))
+        #PID = "P3"
+        #NO SE PUEDE USAR parent cuando no es tu padre inmediato
+        #necesitamos una estrcutura aparte del grafo que nos haga de memoria
+        #la usaremos para montar el grafo y tambien para implementar las corecciones
+        PID = ctx.parentCtx.getChild(0).getText()
+        self.G.add_edge(PID, IID, weight=OPC, color='b')
         return self.visitChildren(ctx)
 
 
@@ -97,13 +120,6 @@ class EnquestesVisitor(ParseTreeVisitor):
 
 
 del EnquestesParser
-
-
-
-
-
-
-
 
 
 
