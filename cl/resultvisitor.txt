@@ -1,0 +1,21 @@
+C:\Users\hankcs60\Desktop\practicalp20\cl\EnquestesVisitor.py
+? respuestas
+['R1', ':', 'RESPOSTA', '0:zero;', '1:un;', '2:dos;', '3:mesdedos;']
+['R3', ':', 'RESPOSTA', '1:caminant;', '2:encotxe;', '3:entransportpublic;']
+['R4', ':', 'RESPOSTA', '1:Si;', '2:No;']
+['R5', ':', 'RESPOSTA', '1:Tren;', '2:Bus;', '3:Metro;', '4:Altres;']
+preguntas
+['P1', ':', 'PREGUNTA', 'Quants', 'adults', 'viuen', 'a', 'casa', 'teva', '?']
+['P2', ':', 'PREGUNTA', 'Quants', 'menors', 'vien', 'a', 'casa', 'teva', '?']
+['P3', ':', 'PREGUNTA', 'Com', 'vas', 'a', 'la', 'feina', 'majoritariament', '?']
+['P4', ':', 'PREGUNTA', 'Utilitzes', 'car', 'sharing', '?']
+['P5', ':', 'PREGUNTA', 'Quin', 'mitja', 'de', 'transport', 'utilitzes', 'majoritariament', '?']
+[['R1', ':', 'RESPOSTA', '0:zero;', '1:un;', '2:dos;', '3:mesdedos;'], ['R3', ':', 'RESPOSTA', '1:caminant;', '2:encotxe;', '3:entransportpublic;'], ['R4', ':', 'RESPOSTA', '1:Si;', '2:No;'], ['R5', ':', 'RESPOSTA', '1:Tren;', '2:Bus;', '3:Metro;', '4:Altres;'], ['P1', ':', 'PREGUNTA', 'Quants', 'adults', 'viuen', 'a', 'casa', 'teva', '?'], ['P2', ':', 'PREGUNTA', 'Quants', 'menors', 'vien', 'a', 'casa', 'teva', '?'], ['P3', ':', 'PREGUNTA', 'Com', 'vas', 'a', 'la', 'feina', 'majoritariament', '?'], ['P4', ':', 'PREGUNTA', 'Utilitzes', 'car', 'sharing', '?'], ['P5', ':', 'PREGUNTA', 'Quin', 'mitja', 'de', 'transport', 'utilitzes', 'majoritariament', '?']]
+('I1', 'P1', 'R1')
+('I2', 'P2', 'R1')
+('I3', 'P3', 'R3')
+('I4', 'P4', 'R4')
+('I5', 'P5', 'R5')
+('2', 'I4')
+('3', 'I5')
+['P1', 'P2', 'R1', 'P3', 'R3', 'P4', 'R4', 'P5', 'R5', '(2,I4)', 'I4', 'I5', 'END'] [('P1', 'R1'), ('P2', 'R1'), ('P3', 'R3'), ('P4', 'R4'), ('P5', 'R5'), ('(2,I4)', 'I4'), ('(2,I4)', 'I5')]

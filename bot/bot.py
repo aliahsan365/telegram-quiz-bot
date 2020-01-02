@@ -2,15 +2,31 @@ import telegram
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
 
-
 import pickle
-print(pickle.__doc__)
+import os.path
+
+#print(pickle.__doc__)
 
 import networkx as nx
 import numpy as np
 import matplotlib.pyplot as plt
 
 #sumalista para el piechart
+pickle_path = os.path.abspath(__file__)
+
+my_path = os.path.abspath(os.path.dirname(__file__))
+file_path = os.path.join(my_path, "cl\graph.pickle")
+
+print("pickle path abs")
+print(file_path)
+
+def load_graph():
+    pickle_in = open(file_path,"rb")
+    Gin = pickle.load(pickle_in)
+    print(Gin.nodes,Gin.edges)
+
+#load_graph()
+
 
 def sum_all(l):
     res = 0
@@ -25,6 +41,8 @@ def max_all(l):
         if x > max:
             max = x
     return max
+
+
 
 # declara una constant amb el access token que llegeix de token.txt
 TOKEN = open('token.txt').read().strip()

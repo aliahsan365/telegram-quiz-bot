@@ -9,19 +9,27 @@ else:
 import networkx as nx
 import matplotlib.pyplot as plt
 import pickle
+import os
+
+my_path = os.path.abspath(__file__)
+print(my_path)
+
+my_file = 'graph.png'
 
 def save_graph(G):
     pickle_out = open("graph.pickle", "wb")
 
     pickle.dump(G,pickle_out)
     pickle_out.close()
+
+
 #TODO: todotest
 #FIXME: fixmetest
 #REVIEw: review
 def load_graph():
     pickle_in = open("graph.pickle","rb")
     Gin = pickle.load(pickle_in)
-    print(Gin.nodes,Gin.edges)
+    #print(Gin.nodes,Gin.edges)
 
 
 
@@ -34,6 +42,10 @@ def render_graph(G):
     load_graph()
 
     plt.show()
+    #fig = plt.figure()
+    #fig.savefig(os.path.join(my_path, my_file))
+    #plt.close(fig)
+
 
 
 
@@ -41,10 +53,11 @@ def render_graph(G):
 #resposta : RID PUNTS RESPOSTA opcio*;
 #opcio : NUMERO PUNTS PARAULES* PUNTCOMA;
 class Resposta():
-    def __init__(self,rid,punts,resposta):
+    def __init__(self,rid,punts):
         self.rid = rid
         self.punts = punts
-        self.resposta = resposta
+
+
 
 #TODO: estrucutras para guardar el grafo.
 
@@ -52,13 +65,37 @@ class EnquestesVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by EnquestesParser#root.
     G = nx.Graph()
+    preguntas = []
+    respuestas = []
+    item = []
+    res_item = []
+    encuestas = []
+
     def getGraph(self):
         return self.G
 
     def visitRoot(self, ctx:EnquestesParser.RootContext):
         self.visitChildren(ctx)
-        self.G.add_node(ctx.getChild(1).getText())
 
+        self.G.add_node(ctx.getChild(1).getText())
+        todo = []
+        print("respuestas")
+        for r in self.respuestas:
+            todo.append(r)
+            print(r)
+        print("preguntas")
+        for p in self.preguntas:
+            todo.append(p)
+            print(p)
+        print("items")
+        for i in self.item:
+            print(i)
+        print("respuestas_items")
+        for ri in self.res_item:
+            print(ri)
+        print("encuestas")
+        for e in self.encuestas:
+            print(e)
         render_graph(self.G)
         return self.visitChildren(ctx)
 
@@ -72,12 +109,22 @@ class EnquestesVisitor(ParseTreeVisitor):
     def visitPregunta(self, ctx:EnquestesParser.PreguntaContext):
         #print(ctx.getChild(0).getText())
         self.G.add_node(ctx.getChild(0).getText())
+        n = ctx.getChildCount()
+        res = []
+        for i in range(n):
+            res.append(ctx.getChild(i).getText())
+        self.preguntas.append(res)
         return self.visitChildren(ctx)
 
 
     # Visit a parse tree produced by EnquestesParser#resposta.
     def visitResposta(self, ctx:EnquestesParser.RespostaContext):
         self.G.add_node(ctx.getChild(0).getText())
+        n = ctx.getChildCount()
+        res = []
+        for i in range(n):
+            res.append(ctx.getChild(i).getText())
+        self.respuestas.append(res)
         return self.visitChildren(ctx)
 
 
@@ -101,7 +148,11 @@ class EnquestesVisitor(ParseTreeVisitor):
         RID = ctx.getChild(2).getText()
 
         #self.G.add_edge(PID, RID, label = IID, color='b')
+
+        tp = (IID,PID,RID)
+        self.item.append(tp)
         self.G.add_edge(PID, RID, weight=IID, color='b')
+
         return self.visitChildren(ctx)
 
 
@@ -122,8 +173,11 @@ class EnquestesVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by EnquestesParser#respostaelement.
     def visitRespostaelement(self, ctx:EnquestesParser.RespostaelementContext):
+        AID = ctx.parentCtx.parentCtx.parentCtx.getChild(0).getText()
         OPC = ctx.getChild(1).getText()
-        IID = ctx.getChild(3).getText()
+        IID = ctx.parentCtx.parentCtx.getChild(0).getText()
+        IID_OPC = ctx.getChild(3).getText()
+
        #print((OPC,IID))
         #PID = "P3"
         #NO SE PUEDE USAR parent cuando no es tu padre inmediato
@@ -131,16 +185,23 @@ class EnquestesVisitor(ParseTreeVisitor):
         #la usaremos para montar el grafo y tambien para implementar las corecciones
         PID = ctx.parentCtx.getChild(0).getText()
         self.G.add_edge(PID, IID, weight=OPC, color='b')
+        t = (AID,IID,(OPC,IID_OPC))
+        self.res_item.append(t)
         return self.visitChildren(ctx)
 
 
     # Visit a parse tree produced by EnquestesParser#enquesta.
     def visitEnquesta(self, ctx:EnquestesParser.EnquestaContext):
+        EID = ctx.getChild(0).getText()
+
+        n = ctx.getChildCount()
+        res = []
+        res.append(EID)
+        for i in range(3,n):
+            res.append(ctx.getChild(i).getText())
+        self.encuestas.append(res)
         return self.visitChildren(ctx)
 
 
 
 del EnquestesParser
-
-
-

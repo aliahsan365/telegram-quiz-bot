@@ -1,0 +1,2 @@
+1.estrucutras para guardar cuando recorres el arbol con visitor.
+2.como guardar un objeto o una lista de cosas en un nodo del grafo
