@@ -40,7 +40,9 @@ def render_graph(G):
     pos = nx.circular_layout(G)
     nx.draw(G, pos, with_labels=True, font_weight='bold', arrow=True)
     load_graph()
-
+    #print("overall")
+    #print(G.nodes)
+    #print(G.edges)
     plt.show()
     #fig = plt.figure()
     #fig.savefig(os.path.join(my_path, my_file))
@@ -61,10 +63,48 @@ class Resposta():
 
 #TODO: estrucutras para guardar el grafo.
 
+
+def mount_graph(G,items,alternativas,encuestas):
+
+    #l_en = encuestas[1:]
+
+    print("mount graph")
+    print(len(encuestas))
+
+
+    for e in encuestas:
+        l_items = e[1:]
+        res = []
+        for i in l_items:
+            for e_l in items:
+                if e_l[0] == i:
+                    res.append(e_l[1])
+        for r in res:
+            print(r)
+        lpares= []
+        for i in range(0,len(res)-1):
+            lpares.append((res[i],res[i+1]))
+        print(lpares)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 class EnquestesVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by EnquestesParser#root.
-    G = nx.Graph()
+    G = nx.DiGraph()
+    #G = nx.Graph()
     preguntas = []
     respuestas = []
     item = []
@@ -78,6 +118,9 @@ class EnquestesVisitor(ParseTreeVisitor):
         self.visitChildren(ctx)
 
         self.G.add_node(ctx.getChild(1).getText())
+        print("root")
+        print(self.G.nodes)
+        print(self.G.edges)
         todo = []
         print("respuestas")
         for r in self.respuestas:
@@ -96,7 +139,9 @@ class EnquestesVisitor(ParseTreeVisitor):
         print("encuestas")
         for e in self.encuestas:
             print(e)
+        mount_graph(self.G,self.item,self.res_item,self.encuestas)
         render_graph(self.G)
+
         return self.visitChildren(ctx)
 
 
@@ -151,7 +196,7 @@ class EnquestesVisitor(ParseTreeVisitor):
 
         tp = (IID,PID,RID)
         self.item.append(tp)
-        self.G.add_edge(PID, RID, weight=IID, color='b')
+        self.G.add_edge(PID, RID)
 
         return self.visitChildren(ctx)
 
@@ -184,7 +229,6 @@ class EnquestesVisitor(ParseTreeVisitor):
         #necesitamos una estrcutura aparte del grafo que nos haga de memoria
         #la usaremos para montar el grafo y tambien para implementar las corecciones
         PID = ctx.parentCtx.getChild(0).getText()
-        self.G.add_edge(PID, IID, weight=OPC, color='b')
         t = (AID,IID,(OPC,IID_OPC))
         self.res_item.append(t)
         return self.visitChildren(ctx)
@@ -193,15 +237,24 @@ class EnquestesVisitor(ParseTreeVisitor):
     # Visit a parse tree produced by EnquestesParser#enquesta.
     def visitEnquesta(self, ctx:EnquestesParser.EnquestaContext):
         EID = ctx.getChild(0).getText()
-
+        self.G.add_node(EID)
         n = ctx.getChildCount()
         res = []
         res.append(EID)
         for i in range(3,n):
             res.append(ctx.getChild(i).getText())
         self.encuestas.append(res)
+        #H = nx.path_graph(res[1:])
+
+
+        #self.G.(res[1:])
+
+
+
+
+
+
+        #self.G.add_edges_from(H)
         return self.visitChildren(ctx)
-
-
 
 del EnquestesParser

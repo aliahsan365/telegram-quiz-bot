@@ -14,10 +14,17 @@ G.add_edge(7,8)
 G.add_edge(8,9)
 G.add_edge(9,1)
 
+print(G.nodes.data())
+
 #pintar el grafo, todo esto es lo q da la foto.
-nx.draw(G,with_labels=True)
-plt.draw()
-plt.show()
+#nx.draw(G,with_labels=True)
+#plt.draw()
+#plt.show()
+
+
+
+
+
 
 
 

@@ -44,15 +44,10 @@ def max_all(l):
 
 
 
-# declara una constant amb el access token que llegeix de token.txt
-TOKEN = open('token.txt').read().strip()
 
-# crea objectes per treballar amb Telegram
-updater = Updater(token=TOKEN)
-dispatcher = updater.dispatcher
 
-# engega el bot
-updater.start_polling()
+
+
 
 def start(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text="Inicia la conversa amb el Bot.")
@@ -74,15 +69,31 @@ def author(bot, update):
 
 
 
-# indica que quan el bot rebi la comanda /start s'executi la funció start
-dispatcher.add_handler(CommandHandler('start', start))
-
-# indica que quan el bot rebi la comanda /help s'executi la funció start
-dispatcher.add_handler(CommandHandler('help', help))
-
-# indica que quan el bot rebi la comanda /author s'executi la funció start
-dispatcher.add_handler(CommandHandler('author', author))
 
 
-#update.message.text conté el text enviat per l’usuari,
 
+def main():
+    print("bot running")
+    # engega el bot
+    # declara una constant amb el access token que llegeix de token.txt
+    TOKEN = open('token.txt').read().strip()
+
+    # crea objectes per treballar amb Telegram
+    updater = Updater(token=TOKEN)
+    dispatcher = updater.dispatcher
+    updater.start_polling()
+
+    # indica que quan el bot rebi la comanda /start s'executi la funció start
+    dispatcher.add_handler(CommandHandler('start', start))
+
+    # indica que quan el bot rebi la comanda /help s'executi la funció start
+    dispatcher.add_handler(CommandHandler('help', help))
+
+    # indica que quan el bot rebi la comanda /author s'executi la funció start
+    dispatcher.add_handler(CommandHandler('author', author))
+
+    print("chaobot")
+
+
+if __name__ == '__main__':
+    main()
