@@ -32,21 +32,16 @@ def load_graph():
     #print(Gin.nodes,Gin.edges)
 
 
-
-
 def render_graph(G):
-    save_graph(G)
-
-    pos = nx.circular_layout(G)
-    nx.draw(G, pos, with_labels=True, font_weight='bold', arrow=True)
-    load_graph()
-    #print("overall")
-    #print(G.nodes)
-    #print(G.edges)
+    layout = nx.circular_layout(G)
+    arestas = G.edges()
+    colores = [G[u][v]['color'] for u, v in arestas]
+    nx.draw(G, layout, arrow=True , with_labels=True, edge_color=colores )
+    tags = nx.get_edge_attributes(G, 'label')
+    nx.draw_networkx_edge_labels(G, layout, edge_labels=tags)
     plt.show()
-    #fig = plt.figure()
-    #fig.savefig(os.path.join(my_path, my_file))
-    #plt.close(fig)
+
+
 
 
 
@@ -74,6 +69,7 @@ def mount_graph(G,items,alternativas,encuestas):
 
     for e in encuestas:
         l_items = e[1:]
+
         res = []
         for i in l_items:
             for e_l in items:
@@ -82,9 +78,17 @@ def mount_graph(G,items,alternativas,encuestas):
         for r in res:
             print(r)
         lpares= []
+        semibool = 1
+
         for i in range(0,len(res)-1):
+            if semibool == 1:
+                G.add_edge(e[0], res[i], color='black')
+                semibool = 0
+
             lpares.append((res[i],res[i+1]))
+            G.add_edge(res[i], res[i+1], color = 'black')
         print(lpares)
+
 
 
 
@@ -153,22 +157,23 @@ class EnquestesVisitor(ParseTreeVisitor):
     # Visit a parse tree produced by EnquestesParser#pregunta.
     def visitPregunta(self, ctx:EnquestesParser.PreguntaContext):
         #print(ctx.getChild(0).getText())
-        self.G.add_node(ctx.getChild(0).getText())
         n = ctx.getChildCount()
         res = []
         for i in range(n):
             res.append(ctx.getChild(i).getText())
+        self.G.add_node(ctx.getChild(0).getText(), content=res)
         self.preguntas.append(res)
         return self.visitChildren(ctx)
 
 
     # Visit a parse tree produced by EnquestesParser#resposta.
     def visitResposta(self, ctx:EnquestesParser.RespostaContext):
-        self.G.add_node(ctx.getChild(0).getText())
+
         n = ctx.getChildCount()
         res = []
         for i in range(n):
             res.append(ctx.getChild(i).getText())
+        self.G.add_node(ctx.getChild(0).getText(), content = res)
         self.respuestas.append(res)
         return self.visitChildren(ctx)
 
@@ -196,7 +201,7 @@ class EnquestesVisitor(ParseTreeVisitor):
 
         tp = (IID,PID,RID)
         self.item.append(tp)
-        self.G.add_edge(PID, RID)
+        self.G.add_edge(PID, RID, label = IID, color = 'blue')
 
         return self.visitChildren(ctx)
 
