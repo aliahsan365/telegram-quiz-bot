@@ -47,13 +47,6 @@ def render_graph(G):
 
 
 
-#resposta : RID PUNTS RESPOSTA opcio*;
-#opcio : NUMERO PUNTS PARAULES* PUNTCOMA;
-class Resposta():
-    def __init__(self,rid,punts):
-        self.rid = rid
-        self.punts = punts
-
 
 
 #TODO: estrucutras para guardar el grafo.
@@ -61,7 +54,6 @@ class Resposta():
 
 def mount_graph(G,items,alternativas,encuestas):
 
-    #l_en = encuestas[1:]
 
     print("mount graph")
     print(len(encuestas))
@@ -108,7 +100,7 @@ class EnquestesVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by EnquestesParser#root.
     G = nx.DiGraph()
-    #G = nx.Graph()
+
     preguntas = []
     respuestas = []
     item = []
@@ -249,17 +241,7 @@ class EnquestesVisitor(ParseTreeVisitor):
         for i in range(3,n):
             res.append(ctx.getChild(i).getText())
         self.encuestas.append(res)
-        #H = nx.path_graph(res[1:])
 
-
-        #self.G.(res[1:])
-
-
-
-
-
-
-        #self.G.add_edges_from(H)
         return self.visitChildren(ctx)
 
 del EnquestesParser
