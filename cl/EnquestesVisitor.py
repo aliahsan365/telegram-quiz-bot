@@ -249,7 +249,17 @@ class EnquestesVisitor(ParseTreeVisitor):
         for i in range(3,n):
             res.append(ctx.getChild(i).getText())
         self.encuestas.append(res)
+        #H = nx.path_graph(res[1:])
 
+
+        #self.G.(res[1:])
+
+
+
+
+
+
+        #self.G.add_edges_from(H)
         return self.visitChildren(ctx)
 
 del EnquestesParser
