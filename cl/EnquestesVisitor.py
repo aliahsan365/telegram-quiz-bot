@@ -9,23 +9,27 @@ else:
 import networkx as nx
 import matplotlib.pyplot as plt
 import pickle
-import os
 
-my_path = os.path.abspath(__file__)
-print(my_path)
 
-my_file = 'graph.png'
+from pathlib import Path
+
+
+
+data_folder = Path("cl")
+
+file_to_save = data_folder / "graph.pickle"
+
 
 def save_graph(G):
     pickle_out = open("graph.pickle", "wb")
-
     pickle.dump(G,pickle_out)
     pickle_out.close()
 
 def load_graph():
     pickle_in = open("graph.pickle","rb")
     Gin = pickle.load(pickle_in)
-    #print(Gin.nodes,Gin.edges)
+    print(Gin.nodes, Gin.edges)
+
 
 def render_graph(G):
     layout = nx.circular_layout(G)
@@ -75,6 +79,8 @@ class EnquestesVisitor(ParseTreeVisitor):
         self.G.add_node(ID_END)
         mount_graph(self.G,self.item,self.encuestas)
         render_graph(self.G)
+        save_graph(self.G)
+        load_graph()
         return self.visitChildren(ctx)
 
 

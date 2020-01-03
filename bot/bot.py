@@ -1,31 +1,20 @@
 import telegram
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
-
-import pickle
-import os.path
-
-#print(pickle.__doc__)
-
 import networkx as nx
 import numpy as np
 import matplotlib.pyplot as plt
+import pickle
+from pathlib import Path
 
-#sumalista para el piechart
-pickle_path = os.path.abspath(__file__)
 
-my_path = os.path.abspath(os.path.dirname(__file__))
-file_path = os.path.join(my_path, "cl\graph.pickle")
-
-print("pickle path abs")
-print(file_path)
 
 def load_graph():
-    pickle_in = open(file_path,"rb")
+    pickle_in = open("../cl/graph.pickle","rb")
     Gin = pickle.load(pickle_in)
-    print(Gin.nodes,Gin.edges)
+    return Gin
 
-#load_graph()
+
 
 
 def sum_all(l):
@@ -68,11 +57,21 @@ def author(bot, update):
 
 
 
+def render_graph(G):
+    layout = nx.circular_layout(G)
+    arestas = G.edges()
+    colores = [G[u][v]['color'] for u, v in arestas]
+    nx.draw(G, layout, arrow=True , with_labels=True, edge_color=colores)
+    tags = nx.get_edge_attributes(G, 'label')
+    nx.draw_networkx_edge_labels(G, layout, edge_labels=tags)
+    plt.show()
 
 
 
 
 def main():
+    G = load_graph()
+    render_graph(G)
     print("bot running")
     # engega el bot
     # declara una constant amb el access token que llegeix de token.txt
