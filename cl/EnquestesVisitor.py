@@ -7,34 +7,19 @@ else:
 
 # This class defines a complete generic visitor for a parse tree produced by EnquestesParser.
 import networkx as nx
-import matplotlib.pyplot as plt
-import pickle
 
-def save_graph(G):
-    pickle_out = open("graph.pickle", "wb")
-    pickle.dump(G,pickle_out)
-    pickle_out.close()
 
-def render_graph(G):
-    layout = nx.circular_layout(G)
-    arestas = G.edges()
-    colores = [G[u][v]['color'] for u, v in arestas]
-    nx.draw(G, layout, arrow=True , with_labels=True, edge_color=colores )
-    tags = nx.get_edge_attributes(G, 'label')
-    nx.draw_networkx_edge_labels(G, layout, edge_labels=tags)
-    plt.show()
 
 class EnquestesVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by EnquestesParser#root.
-    G = nx.DiGraph()
     items = []
+    def __init__(self,G):
+        self.G = G
     def visitRoot(self, ctx:EnquestesParser.RootContext):
         self.visitChildren(ctx)
-        END = ctx.getChild(1).getText()
-        self.G.add_node(END)
-        render_graph(self.G)
-        save_graph(self.G)
+        #es el nodo END ctx.getChild(1).getText()
+        self.G.add_node(ctx.getChild(1).getText())
         return self.visitChildren(ctx)
 
 
@@ -141,10 +126,8 @@ class EnquestesVisitor(ParseTreeVisitor):
                 if item_encuesta == generic_item[0]:
                     lp.append(generic_item[1])
         lp.append('END')
-        camino = []
-        for i in range(0,len(lp)-1):
-            camino.append((lp[i], lp[i+1]))
-        self.G.add_node(EID, content = camino)
+
+        self.G.add_node(EID, content = lp)
         nx.add_path(self.G, lp, color='black')
         return self.visitChildren(ctx)
 

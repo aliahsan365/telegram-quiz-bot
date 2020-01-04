@@ -15,13 +15,6 @@ implications: IID CE blocrespostaelement CD;
 blocrespostaelement: (respostaelement COMA|respostaelement)*;
 respostaelement: PE NUMERO COMA IID PR;
 
-
-//alternativa: AID  PUNTS ALTERNATIVA implications;
-//implications: IID CE (PE NUMERO COMA IID PR COMA | PE NUMERO COMA IID PR)* CD;
-
-
-
-
 enquesta : EID PUNTS ENQUESTA IID*;
 
 AID : 'A'[0-9]+;
