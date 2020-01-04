@@ -10,26 +10,10 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import pickle
 
-
-from pathlib import Path
-
-
-
-data_folder = Path("cl")
-
-file_to_save = data_folder / "graph.pickle"
-
-
 def save_graph(G):
     pickle_out = open("graph.pickle", "wb")
     pickle.dump(G,pickle_out)
     pickle_out.close()
-
-def load_graph():
-    pickle_in = open("graph.pickle","rb")
-    Gin = pickle.load(pickle_in)
-    print(Gin.nodes, Gin.edges)
-
 
 def render_graph(G):
     layout = nx.circular_layout(G)
@@ -40,47 +24,17 @@ def render_graph(G):
     nx.draw_networkx_edge_labels(G, layout, edge_labels=tags)
     plt.show()
 
-
-
-def mount_graph(G,items,encuestas):
-    for e in encuestas:
-        l_items = e[1:]
-        res = []
-        for i in l_items:
-            for e_l in items:
-                if e_l[0] == i:
-                    res.append(e_l[1])
-        lpares= []
-        semibool = 1
-        n = len(res)
-        for i in range(0,n-1):
-            if semibool == 1:
-                G.add_edge(e[0], res[i], color='black')
-                semibool = 0
-            lpares.append((res[i],res[i+1]))
-            G.add_edge(res[i], res[i+1], color = 'black')
-        #el ultimo -> al end
-        G.add_edge(res[n-1],'END', color = 'black')
-
 class EnquestesVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by EnquestesParser#root.
     G = nx.DiGraph()
     items = []
-
-    encuestas = []
-
-    def getGraph(self):
-        return self.G
-
     def visitRoot(self, ctx:EnquestesParser.RootContext):
         self.visitChildren(ctx)
-        ID_END = ctx.getChild(1).getText()
-        self.G.add_node(ID_END)
-        mount_graph(self.G,self.items,self.encuestas)
+        END = ctx.getChild(1).getText()
+        self.G.add_node(END)
         render_graph(self.G)
         save_graph(self.G)
-        load_graph()
         return self.visitChildren(ctx)
 
 
@@ -112,8 +66,13 @@ class EnquestesVisitor(ParseTreeVisitor):
     #Visit a parse tree produced by EnquestesParser#opcio.
     def visitOpcio(self, ctx:EnquestesParser.OpcioContext):
         opc = ctx.getChild(0).getText()
-        palabras = ctx.getChild(2).getText()
-        return (opc,palabras)
+        n = ctx.getChildCount()
+        palabras = []
+        for i in range(n-2):
+            palabras.append(ctx.getChild(i+2).getText())
+        #esto del  join es para unir una lista de palabras cn espacio
+        #el -1 es para ahorrarse el ;
+        return (opc,' '.join(palabras[:len(palabras)-1]))
 
 
     # Visit a parse tree produced by EnquestesParser#element.

@@ -17,7 +17,7 @@ def main():
     G = load_graph()
     P1 = G.nodes['P1']['content']
     print(P1)
-    print(G.nodes['R1']['content'])
+    print(G.nodes['R3']['content'])
     print(G['P1']['R1']['label'])
 
 
