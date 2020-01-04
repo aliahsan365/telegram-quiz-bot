@@ -79,12 +79,8 @@ See also the list of [contributors](https://github.com/your/project/contributors
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Suposiciones
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
 * Todas las encuestas van al END.
 * Encuesta puede tener como ID : E, E0, E1...En general, E[0-9]*
 * Pregunta, Respuesta, Item y Alternativa tienen P1,R1,I1,A1...En general, LETRAINICIAL[0-9]+
-
+* Las opciones de alternativa pueden tener los pares (numero,item), sin como o con coma.
 

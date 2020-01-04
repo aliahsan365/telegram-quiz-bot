@@ -19,7 +19,7 @@ class EnquestesVisitor(ParseTreeVisitor):
     def visitRoot(self, ctx:EnquestesParser.RootContext):
         self.visitChildren(ctx)
         #es el nodo END ctx.getChild(1).getText()
-        self.G.add_node(ctx.getChild(1).getText())
+        self.G.add_node(ctx.getChild(1).getText() , content= "END.THANKS")
         return self.visitChildren(ctx)
 
 
@@ -126,9 +126,11 @@ class EnquestesVisitor(ParseTreeVisitor):
                 if item_encuesta == generic_item[0]:
                     lp.append(generic_item[1])
         lp.append('END')
-
-        self.G.add_node(EID, content = lp)
+        #print(lp)
+        camino = list(set(lp[1:-1]))
+        self.G.add_node(EID, content = camino)
         nx.add_path(self.G, lp, color='black')
-        return self.visitChildren(ctx)
+        print(self.G.nodes[EID]['content'])
+        #return self.visitChildren(ctx)
 
 del EnquestesParser

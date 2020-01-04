@@ -13,15 +13,28 @@ def load_graph():
     return Gin
 
 
-def main():
-    G = load_graph()
+def encuesta(EID,G):
+    preguntas_encuesta = []
+    index = G.nodes[EID]['content']
+    print(index)
+    for i in sorted(index):
+        preguntas_encuesta.append(G.nodes[i]['content'])
+    return preguntas_encuesta
+
+def  extras(G):
     P1 = G.nodes['P1']['content']
     print(P1)
     print(G.nodes['R3']['content'])
     print(G['P1']['R1']['label'])
 
-
+    print(G.nodes['E']['content'])
     print(G.nodes,G.edges)
+
+def main():
+    G = load_graph()
+    preguntas_encuesta = encuesta('E',G)
+    print(preguntas_encuesta)
+
 
 
 if __name__ == '__main__':
