@@ -6,20 +6,10 @@ import pickle
 from pathlib import Path
 
 
-
-
-
-
 def load_graph():
     pickle_in = open("../cl/graph.pickle","rb")
     Gin = pickle.load(pickle_in)
     return Gin
-
-
-
-
-
-
 
 
 class Stack:
@@ -47,7 +37,9 @@ def dfs(G,EID):
     stack = Stack()
     stack.push(EID)
     visited = []
-    nodos = [EID]
+    preguntas = [EID]
+    respuestas = []
+    pares = []
     while (not stack.isEmpty()):
         c_node = stack.top()
         stack.pop()
@@ -55,17 +47,25 @@ def dfs(G,EID):
         for v in vecinos:
             if (not (v in visited)):
                 if (G[c_node][v]['color'] == 'black' and G[c_node][v]['senyal'] == EID):
-                    nodos.append(v)
+                    if G.nodes[v]['tipo'] == "pregunta":
+                        vecinos_del_vecino =  list(G.successors(v))
+                        for vdv in vecinos_del_vecino:
+                            if G[v][vdv]['color'] == 'blue':
+                                pares.append((v,vdv))
+
+                                respuestas.append(vdv)
+                    preguntas.append(v)
                     stack.push(v)
         visited.append(c_node)
-    return nodos
+    return preguntas,respuestas,pares
 
 
 
 def main():
     G = load_graph()
-    print(dfs(G,'E'))
-
+    print(dfs(G,'E1'))
+    print(dfs(G, 'E2'))
+    print(dfs(G, 'E3'))
 
 
 

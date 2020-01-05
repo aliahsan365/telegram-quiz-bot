@@ -19,7 +19,7 @@ class EnquestesVisitor(ParseTreeVisitor):
     def visitRoot(self, ctx:EnquestesParser.RootContext):
         self.visitChildren(ctx)
         #es el nodo END ctx.getChild(1).getText()
-        self.G.add_node(ctx.getChild(1).getText() , content= "END.THANKS")
+        self.G.add_node(ctx.getChild(1).getText() , content= "END.THANKS", tipo = "final")
 
 
 
@@ -33,7 +33,7 @@ class EnquestesVisitor(ParseTreeVisitor):
         res = []
         for i in range(ctx.getChildCount()):
             res.append(ctx.getChild(i).getText())
-        self.G.add_node(ctx.getChild(0).getText(), content=' '.join(res[3:len(res)-1])+'?')
+        self.G.add_node(ctx.getChild(0).getText(), content=' '.join(res[3:len(res)-1])+'?', tipo = "pregunta")
         return self.visitChildren(ctx)
 
 
@@ -44,7 +44,7 @@ class EnquestesVisitor(ParseTreeVisitor):
         res = []
         for i in range(n-3):
             res.append(self.visit(ctx.getChild(i+3)))
-        self.G.add_node(RID, content = res)
+        self.G.add_node(RID, content = res,tipo = "respuesta")
 
 
 
@@ -129,7 +129,7 @@ class EnquestesVisitor(ParseTreeVisitor):
 
 
         print(lp)
-        self.G.add_node(EID, content=lp)
+        self.G.add_node(EID, content=lp, tipo = "encuesta")
         semibool = 1
 
         for i in range(len(lp)-1):
