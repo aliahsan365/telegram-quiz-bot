@@ -51,6 +51,27 @@ def dfs(G,EID):
                         vecinos_del_vecino =  list(G.successors(v))
                         for vdv in vecinos_del_vecino:
                             if G[v][vdv]['color'] == 'blue':
+                                print('PREGUNTA')
+                                print(G.nodes[v]['content'])
+                                print('RESPOSTA')
+                                print(G.nodes[vdv]['content'])
+                                print('anwswer question')
+                                opc = input()
+                                esta = 0
+                                for par in list(G.nodes[vdv]['content']):
+                                    if (par[0] == opc):
+                                        esta = 1
+                                if (esta == 0):
+                                    print('no esta')
+                                else:
+                                    print('esta')
+                                vecinos_del_vecino_del_vecino = list(G.successors(vdv))
+                                for vdvdv in vecinos_del_vecino_del_vecino:
+                                    if (G[vdv][vdvdv]['color'] == 'green' and G[vdv][vdvdv]['label'] == opc):
+                                        print('verde')
+                                        stack.push(vdvdv)
+
+
                                 pares.append((v,vdv))
 
                                 respuestas.append(vdv)
@@ -63,9 +84,9 @@ def dfs(G,EID):
 
 def main():
     G = load_graph()
-    print(dfs(G,'E1'))
-    print(dfs(G, 'E2'))
-    print(dfs(G, 'E3'))
+    print(dfs(G,'E'))
+    #print(dfs(G, 'E2'))
+    #print(dfs(G, 'E3'))
 
 
 
