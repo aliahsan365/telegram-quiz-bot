@@ -16,7 +16,13 @@ G.add_edge('P1', 'P2', label='I1' )
 print(G['P1']['P2']['label'])
 
 
-
+def dfs(G,EID):
+    visited = [EID]
+    stack = Stack()
+    stack.push(EID)
+    while not stack.isEmpty():
+        print(list(G.successors(stack.pop()))
+    return []
 
 
 
