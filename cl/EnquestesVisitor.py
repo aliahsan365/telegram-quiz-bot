@@ -20,7 +20,7 @@ class EnquestesVisitor(ParseTreeVisitor):
         self.visitChildren(ctx)
         #es el nodo END ctx.getChild(1).getText()
         self.G.add_node(ctx.getChild(1).getText() , content= "END.THANKS")
-        return self.visitChildren(ctx)
+
 
 
     # Visit a parse tree produced by EnquestesParser#blocs.
@@ -119,18 +119,29 @@ class EnquestesVisitor(ParseTreeVisitor):
         for i in range(3,n):
             items_encuesta.append(ctx.getChild(i).getText())
         #lista de preguntas
+
         lp = []
-        lp.append(EID)
+
         for item_encuesta in items_encuesta:
             for generic_item in self.items:
                 if item_encuesta == generic_item[0]:
                     lp.append(generic_item[1])
-        lp.append('END')
-        #print(lp)
-        camino = list(set(lp[1:-1]))
-        self.G.add_node(EID, content = camino)
-        nx.add_path(self.G, lp, color='black')
-        print(self.G.nodes[EID]['content'])
-        #return self.visitChildren(ctx)
+
+
+        print(lp)
+        self.G.add_node(EID, content=lp)
+        semibool = 1
+
+        for i in range(len(lp)-1):
+            if semibool == 1:
+                self.G.add_edge(EID, lp[i], color='black', senyal = EID)
+                semibool = 0
+            self.G.add_edge(lp[i], lp[i+1], color = 'black', senyal = EID)
+        self.G.add_edge(lp[len(lp)-1], 'END', color='black', senyal=EID)
+
+
+
+
+        return self.visitChildren(ctx)
 
 del EnquestesParser

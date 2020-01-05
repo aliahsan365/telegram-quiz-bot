@@ -82,5 +82,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 * Todas las encuestas van al END.
 * Encuesta puede tener como ID : E, E0, E1...En general, E[0-9]*
 * Pregunta, Respuesta, Item y Alternativa tienen P1,R1,I1,A1...En general, LETRAINICIAL[0-9]+
-* Las opciones de alternativa pueden tener los pares (numero,item), sin como o con coma.
-
+* Las opciones de alternativa pueden tener los pares (numero,item), sin coma o con coma.
+* Dos o mas preguntas pueden tener la misma respuesta.
+* Una pregunta tiene exactamente una respuesta.
