@@ -64,6 +64,7 @@ class Stack:
 
 
 def dfs_alternativa(G,PID,opc):
+    nodos_respondidos = []
     stack = Stack()
     stack.push(PID)
     auxopc = opc
@@ -78,16 +79,18 @@ def dfs_alternativa(G,PID,opc):
                     vecinos_del_vecino =  list(G.successors(v))
                     for vdv in vecinos_del_vecino:
                         if G[v][vdv]['color'] == 'blue':
+                            nodos_respondidos.append(v)
                             pregunta(G,v)
                             resposta(G,vdv)
                             print('anwswer question')
                             opc = input()
                             auxopc = opc
+
                 stack.push(v)
         visited.append(c_node)
 
 
-    return visited
+    return nodos_respondidos
 
 
 
@@ -116,8 +119,10 @@ def dfs_encuesta(G,EID):
                             if G[v][vdv]['color'] == 'green':
 
                                 if (G[v][vdv]['label'] == opc):
-                                    visitedalternativa = dfs_alternativa(G,v,opc)
-                                    print(visitedalternativa)
+                                    nodos_respondidos = dfs_alternativa(G,v,opc)
+                                    for i in range(len(nodos_respondidos)):
+                                        visited.append(nodos_respondidos[i])
+
                     stack.push(v)
         visited.append(c_node)
     return visited
