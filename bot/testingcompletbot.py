@@ -12,6 +12,13 @@ def load_graph():
     return Gin
 
 
+def convert_resposta_str(resposta):
+    str = ''
+    for par in resposta:
+        str = str +  par[0] + ': ' + par[1] + '\n'
+    return str
+
+
 class Stack:
     def __init__(self):
         self.items = []
@@ -86,6 +93,8 @@ def dfs_encuesta(G,EID):
                                 print(G.nodes[v]['content'])
                                 print('RESPOSTA')
                                 print(G.nodes[vdv]['content'])
+                                print('convertida')
+                                print(convert_resposta_str(G.nodes[vdv]['content']))
                                 print('anwswer question')
                                 opc = input()
                                 esta = 0
@@ -98,15 +107,6 @@ def dfs_encuesta(G,EID):
                                 else:
                                     print('esta')
                         print(opc)
-                        for vdv in vecinos_del_vecino:
-                            if (G[v][vdv]['color'] == 'green'):
-                                if (G[v][vdv]['label'] == opc):
-                                    print('la respuesta coincide')
-                                    print('vamos a ejecutar el dfs del alternativa')
-                                    visted_alternativas = dfs_alternativa(G,v,opc)
-                                    print(visted_alternativas)
-                                    for elem in visted_alternativas:
-                                        visited.append(elem)
 
 
 
@@ -125,8 +125,9 @@ def dfs_encuesta(G,EID):
 def main():
     G = load_graph()
     #print((G.out_edges('P3')))
-    print(dfs_encuesta(G,'E'))
-    #print(dfs_alternativa(G, 'P3'))
+    print(dfs_encuesta(G,'E1'))
+    #print(dfs_encuesta(G, 'E2'))
+    #print(dfs_encuesta(G, 'E3'))
     #print(dfs(G, 'E2'))
     #print(dfs(G, 'E3'))
 

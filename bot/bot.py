@@ -8,13 +8,10 @@ import pickle
 from pathlib import Path
 
 
-
 def load_graph():
     pickle_in = open("../cl/graph.pickle","rb")
     Gin = pickle.load(pickle_in)
     return Gin
-
-
 
 
 def sum_all(l):
@@ -55,6 +52,15 @@ def author(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text="Ali Muhammad Shiekh.")
     bot.send_message(chat_id=update.message.chat_id, text="ali.muhammad@est.fib.upc.edu")
 
+def quiz(bot, update, args , user_data):
+    try:
+        EID = args[0]
+        print(EID)
+        print('jodejoder')
+
+    except Exception as e:
+        print(e)
+        bot.send_message(chat_id=update.message.chat_id, text='💣')
 
 
 def render_graph(G):
@@ -72,7 +78,7 @@ def render_graph(G):
 def main():
     G = load_graph()
     render_graph(G)
-    print("bot running")
+
     # engega el bot
     # declara una constant amb el access token que llegeix de token.txt
     TOKEN = open('token.txt').read().strip()
@@ -80,6 +86,7 @@ def main():
     # crea objectes per treballar amb Telegram
     updater = Updater(token=TOKEN)
     dispatcher = updater.dispatcher
+    print("bot running")
     updater.start_polling()
 
     # indica que quan el bot rebi la comanda /start s'executi la funció start
@@ -90,6 +97,8 @@ def main():
 
     # indica que quan el bot rebi la comanda /author s'executi la funció start
     dispatcher.add_handler(CommandHandler('author', author))
+
+    dispatcher.add_handler(CommandHandler('quiz', quiz))
 
     print("chaobot")
 
