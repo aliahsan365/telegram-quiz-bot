@@ -128,7 +128,7 @@ class EnquestesVisitor(ParseTreeVisitor):
                     lp.append(generic_item[1])
 
 
-        print(lp)
+        #print(lp)
         self.G.add_node(EID, content=lp, tipo = "encuesta")
         semibool = 1
 

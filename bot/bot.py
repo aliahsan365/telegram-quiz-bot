@@ -88,7 +88,7 @@ def main():
     dispatcher = updater.dispatcher
     print("bot running")
     updater.start_polling()
-
+    updater.idle()
     # indica que quan el bot rebi la comanda /start s'executi la funció start
     dispatcher.add_handler(CommandHandler('start', start))
 

@@ -18,6 +18,30 @@ def convert_resposta_str(resposta):
         str = str +  par[0] + ': ' + par[1] + '\n'
     return str
 
+def pregunta(G,node):
+    p = G.nodes[node]['content']
+    print (p)
+
+def resposta(G,node):
+    r = G.nodes[node]['content']
+    str_r = convert_resposta_str(r)
+    print(str_r)
+
+
+
+
+def comprobar_rango(G,node,opc):
+    esta = 0
+    for par in list(G.nodes[node]['content']):
+        if (par[0] == opc):
+            esta = 1
+    if (esta == 0):
+        # repetir hasta que responda bien!!
+        print('no esta; alternativa')
+    else:
+        print('esta ; alternativa')
+
+
 
 class Stack:
     def __init__(self):
@@ -39,9 +63,9 @@ class Stack:
         return len(self.items)
 
 
-def dfs_alternativa(G,AID,opc):
+def dfs_alternativa(G,PID,opc):
     stack = Stack()
-    stack.push(AID)
+    stack.push(PID)
     auxopc = opc
     visited = []
     while (not stack.isEmpty()):
@@ -49,22 +73,20 @@ def dfs_alternativa(G,AID,opc):
         stack.pop()
         vecinos = list(G.successors(c_node))
         for v in vecinos:
-            if (not (v in visited)):
-                if (G[c_node][v]['color'] == 'green' and G[c_node][v]['label'] == auxopc):
-                    print('pregunta de alternativa')
-                    print('PREGUNTA alternativa')
-                    print(G.nodes[v]['content'])
-                    print('RESPOSTA alternativa')
-                    vecinos_del_vecino = list(G.successors(v))
+            if G[c_node][v]['color'] == 'green':
+                if G[c_node][v]['label'] == auxopc:
+                    vecinos_del_vecino =  list(G.successors(v))
                     for vdv in vecinos_del_vecino:
-                        if G.nodes[vdv]['tipo'] == "respuesta":
-                            print('resposta')
-                            print(G.nodes[vdv]['content'])
-                        print('anwswer question')
-                        auxopc = input()
-
-                    stack.push(v)
+                        if G[v][vdv]['color'] == 'blue':
+                            pregunta(G,v)
+                            resposta(G,vdv)
+                            print('anwswer question')
+                            opc = input()
+                            auxopc = opc
+                stack.push(v)
         visited.append(c_node)
+
+
     return visited
 
 
@@ -75,8 +97,6 @@ def dfs_encuesta(G,EID):
     stack = Stack()
     stack.push(EID)
     visited = []
-
-
     while (not stack.isEmpty()):
         c_node = stack.top()
         stack.pop()
@@ -89,33 +109,15 @@ def dfs_encuesta(G,EID):
                         opc = 'opc'
                         for vdv in vecinos_del_vecino:
                             if G[v][vdv]['color'] == 'blue':
-                                print('PREGUNTA')
-                                print(G.nodes[v]['content'])
-                                print('RESPOSTA')
-                                print(G.nodes[vdv]['content'])
-                                print('convertida')
-                                print(convert_resposta_str(G.nodes[vdv]['content']))
-                                print('anwswer question')
+                                pregunta(G,v)
+                                resposta(G,vdv)
                                 opc = input()
-                                esta = 0
-                                for par in list(G.nodes[vdv]['content']):
-                                    if (par[0] == opc):
-                                        esta = 1
-                                if (esta == 0):
-                                    #repetir hasta que responda bien
-                                    print('no esta')
-                                else:
-                                    print('esta')
-                        print(opc)
+                        for vdv in vecinos_del_vecino:
+                            if G[v][vdv]['color'] == 'green':
 
-
-
-
-
-
-
-
-
+                                if (G[v][vdv]['label'] == opc):
+                                    visitedalternativa = dfs_alternativa(G,v,opc)
+                                    print(visitedalternativa)
                     stack.push(v)
         visited.append(c_node)
     return visited
@@ -125,7 +127,7 @@ def dfs_encuesta(G,EID):
 def main():
     G = load_graph()
     #print((G.out_edges('P3')))
-    print(dfs_encuesta(G,'E1'))
+    print(dfs_encuesta(G,'E'))
     #print(dfs_encuesta(G, 'E2'))
     #print(dfs_encuesta(G, 'E3'))
     #print(dfs(G, 'E2'))
