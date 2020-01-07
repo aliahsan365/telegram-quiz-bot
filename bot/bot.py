@@ -34,23 +34,6 @@ def max_all(l):
 
 
 
-def start(bot, update):
-    bot.send_message(chat_id=update.message.chat_id, text="Inicia la conversa amb el Bot.")
-
-def help(bot, update):
-    bot.send_message(chat_id=update.message.chat_id, text="/help")
-    bot.send_message(chat_id=update.message.chat_id, text="/start")
-    bot.send_message(chat_id=update.message.chat_id, text="/author")
-    bot.send_message(chat_id=update.message.chat_id, text="/quiz ⟨idEnquesta⟩")
-    bot.send_message(chat_id=update.message.chat_id, text="/bar <idPregunta>")
-    bot.send_message(chat_id=update.message.chat_id, text="/pie <idPregunta>")
-    bot.send_message(chat_id=update.message.chat_id, text="/report")
-    bot.send_message(chat_id=update.message.chat_id, text="Bot per fer enquestes")
-
-def author(bot, update):
-    bot.send_message(chat_id=update.message.chat_id, text="Ali Muhammad Shiekh.")
-    bot.send_message(chat_id=update.message.chat_id, text="ali.muhammad@est.fib.upc.edu")
-
 
 
 def convert_resposta_str(resposta):
@@ -68,6 +51,21 @@ def resposta(G,node):
     str_r = convert_resposta_str(r)
     print(str_r)
 
+
+def check_encuesta(G,node):
+    for v in list(G.nodes):
+        if G.nodes[v]['tipo'] == 'encuesta':
+            if G.nodes[node] ==  v:
+                return 'esta'
+    return 'no esta'
+
+
+def check_pregunta(G,node):
+    for v in list(G.nodes):
+        if G.nodes[v]['tipo'] == 'pregunta':
+            if G.nodes[node] ==  v:
+                return 'esta'
+    return 'no esta'
 
 
 
@@ -159,97 +157,89 @@ def dfs_encuesta(G,EID):
 
 
 
-def listener(messages):
-    """
-    When new messages arrive TeleBot will call this function.
-    """
-    for m in messages:
-        if m.content_type == 'text':
-            # print the sent message to the console
-            print(str(m.chat.first_name) + " [" + str(m.chat.id) + "]: " + m.text)
 
 
-def ptr(bot,update):
-    sentence = update.message.text
-    bot.send_message(chat_id=update.message.chat_id, text=sentence)
+def start(bot, update):
+    bot.send_message(chat_id=update.message.chat_id, text="Inicia la conversa amb el Bot.")
+
+def help(bot, update):
+    bot.send_message(chat_id=update.message.chat_id, text="/help")
+    bot.send_message(chat_id=update.message.chat_id, text="/start")
+    bot.send_message(chat_id=update.message.chat_id, text="/author")
+    bot.send_message(chat_id=update.message.chat_id, text="/quiz ⟨idEnquesta⟩")
+    bot.send_message(chat_id=update.message.chat_id, text="/bar <idPregunta>")
+    bot.send_message(chat_id=update.message.chat_id, text="/pie <idPregunta>")
+    bot.send_message(chat_id=update.message.chat_id, text="/report")
+    bot.send_message(chat_id=update.message.chat_id, text="Bot per fer enquestes")
+
+def author(bot, update):
+    bot.send_message(chat_id=update.message.chat_id, text="Ali Muhammad Shiekh.")
+    bot.send_message(chat_id=update.message.chat_id, text="ali.muhammad@est.fib.upc.edu")
+
+
 
 
 
 def quiz(bot, update, args):
     try:
         G = load_graph()
-        #dispatcher = update.dispatcher
-        #dispatcher.add_handler(MessageHandler(Filters.text, ptr))
         EID = args[0]
-        if (EID in list(G.nodes)):
-            bot.send_message(chat_id=update.message.chat_id, text="esta")
-            camino = dfs_encuesta(G,EID)
-            bot.send_message(chat_id=update.message.chat_id, text=str(camino))
-            #user =  update.message.from_user
-            #print(user)
-            #bot.set_update_listener(listener)
-
-
-        else:
-            bot.send_message(chat_id=update.message.chat_id, text="no esta")
-
-
-
-
-
         bot.send_message(chat_id=update.message.chat_id, text=EID)
-
-
-
+        sentence = update.message.text
+        print(sentence)
     except Exception as e:
         print(e)
         bot.send_message(chat_id=update.message.chat_id, text='💣')
 
 
-def render_graph(G):
-    layout = nx.circular_layout(G)
-    arestas = G.edges()
-    colores = [G[u][v]['color'] for u, v in arestas]
-    nx.draw(G, layout, arrow=True , with_labels=True, edge_color=colores)
-    tags = nx.get_edge_attributes(G, 'label')
-    nx.draw_networkx_edge_labels(G, layout, edge_labels=tags)
-    plt.show()
+
+
+def bar(bot, update, args):
+    try:
+        bot.send_message(chat_id=update.message.chat_id, text='pie')
+    except Exception as e:
+        print(e)
+        bot.send_message(chat_id=update.message.chat_id, text='💣')
+
+
+def pie(bot, update, args):
+    try:
+
+        bot.send_message(chat_id=update.message.chat_id, text='pie')
+    except Exception as e:
+        print(e)
+        bot.send_message(chat_id=update.message.chat_id, text='💣')
+
+
+def report(bot, update):
+    try:
+        bot.send_message(chat_id=update.message.chat_id, text='report')
+    except Exception as e:
+        print(e)
+        bot.send_message(chat_id=update.message.chat_id, text='💣')
+
+
+def mesghand():
+    print('mesghand')
+
 
 
 
 
 def main():
-    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                        level=logging.INFO)
-
-    # engega el bot
-    # declara una constant amb el access token que llegeix de token.txt
+    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
     TOKEN = open('token.txt').read().strip()
-
-    # crea objectes per treballar amb Telegram
     updater = Updater(token=TOKEN)
     dispatcher = updater.dispatcher
-    print("bot running")
-
-
-    #conv_handler = ConversationHandler( entry_points=[CommandHandler('start', start)])
-    # indica que quan el bot rebi la comanda /start s'executi la funció start
     dispatcher.add_handler(CommandHandler('start', start))
-
-    # indica que quan el bot rebi la comanda /help s'executi la funció start
     dispatcher.add_handler(CommandHandler('help', help))
-
-    # indica que quan el bot rebi la comanda /author s'executi la funció start
     dispatcher.add_handler(CommandHandler('author', author))
-
     dispatcher.add_handler(CommandHandler('quiz', quiz, pass_args=True))
-    #dispatcher.add_handler(CommandHandler(Filters.text, 'quiz', quiz, pass_args=True))
-    #dispatcher.add_handler(MessageHandler(Filters.text, quiz, pass_args=True))
-    #dispatcher.add_error_handler(error)
+    dispatcher.add_handler(CommandHandler('pie', pie, pass_args=True))
+    dispatcher.add_handler(CommandHandler('bar', bar, pass_args=True))
+    dispatcher.add_handler(CommandHandler('report', report))
+    dispatcher.add_handler(MessageHandler(filters=telegram.ext.filters.Filters.all,callback=mesghand,pass_user_data=True))
     updater.start_polling()
-
-    print("chaobot")
-
 
 if __name__ == '__main__':
     main()
