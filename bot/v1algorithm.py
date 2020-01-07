@@ -6,6 +6,11 @@ import pickle
 from pathlib import Path
 
 
+def load_graph():
+    pickle_in = open("../cl/graph.pickle","rb")
+    Gin = pickle.load(pickle_in)
+    return Gin
+
 
 def convert_resposta_str(resposta):
     str = ''
@@ -21,10 +26,6 @@ def resposta(G,node):
     r = G.nodes[node]['content']
     str_r = convert_resposta_str(r)
     print(str_r)
-
-class Routing():
-    def __init__(self,G):
-        self.G = G
 
 
 
@@ -126,5 +127,21 @@ def dfs_encuesta(G,EID):
         visited.append(c_node)
     return visited
 
+
+
+def main():
+    G = load_graph()
+    #print((G.out_edges('P3')))
+    print(dfs_encuesta(G,'E'))
+    #print(dfs_encuesta(G, 'E2'))
+    #print(dfs_encuesta(G, 'E3'))
+    #print(dfs(G, 'E2'))
+    #print(dfs(G, 'E3'))
+
+
+
+
+if __name__ == '__main__':
+    main()
 
 
