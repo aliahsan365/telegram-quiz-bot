@@ -10,6 +10,7 @@ opcio : NUMERO PUNTS PARAULES* PUNTCOMA;
 element: IID PUNTS ELEMENT relacio*;
 relacio: PID FLETXA RID ;
 
+
 alternativa: AID  PUNTS ALTERNATIVA implications;
 implications: IID CE blocrespostaelement CD;
 blocrespostaelement: (respostaelement COMA|respostaelement)*;

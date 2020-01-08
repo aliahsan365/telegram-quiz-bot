@@ -110,10 +110,10 @@ def dfs_alternativa(bot,update,user_data,G,PID,opc):
                             nodos_respondidos.append(v)
                             p = pregunta(G, v)
                             r = resposta(G, vdv)
-                            #print(str(c_node + '> ' + p + '\n' + r))
-                            #opc = input()
-                            bot.send_message(chat_id=update.message.chat_id, text=str(c_node  + '> ' + p + '\n' +  r))
-                            opc = update.message.text
+                            print(str(c_node + '> ' + p + '\n' + r))
+                            opc = input()
+                            #bot.send_message(chat_id=update.message.chat_id, text=str(c_node  + '> ' + p + '\n' +  r))
+                            #opc = update.message.text
                 stack.push(v)
         visited.append(c_node)
 
@@ -125,7 +125,6 @@ def dfs_alternativa(bot,update,user_data,G,PID,opc):
 
 def dfs_encuesta(bot,update,user_data,G,EID):
 
-    print(user_data)
 
     stack = Stack()
     stack.push(EID)
@@ -145,10 +144,11 @@ def dfs_encuesta(bot,update,user_data,G,EID):
 
                                 p = pregunta(G,v)
                                 r = resposta(G,vdv)
-                                #print(str(c_node + '> ' + p + '\n' + r))
-                                #opc = input()
-                                bot.send_message(chat_id=update.message.chat_id, text=str(c_node + '> ' + p + '\n' + r))
-                                opc = update.message.text
+
+                                print(str(c_node + '> ' + p + '\n' + r))
+                                opc = next()
+                                #bot.send_message(chat_id=update.message.chat_id, text=str(c_node + '> ' + p + '\n' + r))
+                                #opc = update.message.text
 
 
                         for vdv in vecinos_del_vecino:
@@ -192,10 +192,10 @@ def author(bot, update):
 
 def quiz(bot, update, args, user_data):
     try:
-
         G = load_graph()
         EID = args[0]
         dfs_encuesta(bot,update,user_data,G,EID)
+
 
 
     except Exception as e:
@@ -228,6 +228,18 @@ def report(bot, update):
         print(e)
         bot.send_message(chat_id=update.message.chat_id, text='💣')
 
+def controladora(bot, update, user_data):
+    try:
+        G = load_graph()
+
+        if user_data['encuesta'] is None:
+            print('entro aqui')
+            user_data['encuesta'] =  'E'
+        #dfs_encuesta(bot,update,user_data,G)
+    except Exception as e:
+        print(e)
+        bot.send_message(chat_id=update.message.chat_id, text='💣')
+
 
 def main():
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
@@ -242,7 +254,8 @@ def main():
     dispatcher.add_handler(CommandHandler('bar', bar, pass_args=True))
     dispatcher.add_handler(CommandHandler('report', report))
 
-    dispatcher.add_handler(MessageHandler(Filters.text, dfs_encuesta,pass_user_data=True))
+    dispatcher.add_handler(MessageHandler(Filters.text, dfs_encuesta, pass_user_data=True))
+    # dispatcher.add_handler(MessageHandler(Filters.all,controladora, pass_user_data=True))
 
     updater.start_polling()
 

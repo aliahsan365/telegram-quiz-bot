@@ -23,6 +23,7 @@ class EnquestesVisitor(ParseTreeVisitor):
 
 
 
+
     # Visit a parse tree produced by EnquestesParser#blocs.
     def visitBlocs(self, ctx:EnquestesParser.BlocsContext):
         return self.visitChildren(ctx)

@@ -31,3 +31,45 @@ def quiz(bot, update, args):
     except Exception as e:
         print(e)
         bot.send_message(chat_id=update.message.chat_id, text='💣')
+
+
+
+
+---
+if user_data is None:
+    user_data['encuesta'] = args[0]
+else:
+    print(user_data['encuesta'])
+    print('aaaaaaaaaaaaaaaaaaahhh')
+
+
+
+
+
+------------
+
+
+
+estadisticas = dict()
+
+
+def save_graph(estadisticas):
+    pickle_out = open("estadisticas.pickle", "wb")
+    pickle.dump(G,pickle_out)
+    pickle_out.close()
+
+
+
+def load_graph():
+    pickle_in = open("stats.pickle","rb")
+     = pickle.load(pickle_in)
+    return Gin
+
+
+
+def actualizar_estadisticas():
+    #dicionariodelusuario
+    #por cada preguntaz en diccionario usuario
+    if p1 in estadisticas:
+         dict = estadisticas[p1]
+         //opc como key de dict nuevo
