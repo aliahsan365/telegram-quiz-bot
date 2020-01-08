@@ -65,11 +65,13 @@ def load_graph():
      = pickle.load(pickle_in)
     return Gin
 
-
+estaditicas_generales = {{p1:{opc1,contador},{opc2,contador},...},{p2:{opc1,contador},{opc2,contador},...}...}
 
 def actualizar_estadisticas():
     #dicionariodelusuario
     #por cada preguntaz en diccionario usuario
+    user_data = {{p1,opc},{p2,opc}....}
+
     if p1 in estadisticas:
          dict = estadisticas[p1]
          //opc como key de dict nuevo
