@@ -45,11 +45,13 @@ def convert_resposta_str(resposta):
 def pregunta(G,node):
     p = G.nodes[node]['content']
     print (p)
+    return p
 
 def resposta(G,node):
     r = G.nodes[node]['content']
     str_r = convert_resposta_str(r)
     print(str_r)
+    return str_r
 
 
 def check_encuesta(G,node):
@@ -89,11 +91,11 @@ class Stack:
         return len(self.items)
 
 
-def dfs_alternativa(G,PID,opc):
+def dfs_alternativa(bot,update,user_data,G,PID,opc):
     nodos_respondidos = []
     stack = Stack()
     stack.push(PID)
-    auxopc = opc
+
     visited = []
     while (not stack.isEmpty()):
         c_node = stack.top()
@@ -101,17 +103,17 @@ def dfs_alternativa(G,PID,opc):
         vecinos = list(G.successors(c_node))
         for v in vecinos:
             if G[c_node][v]['color'] == 'green':
-                if G[c_node][v]['label'] == auxopc:
+                if G[c_node][v]['label'] == opc:
                     vecinos_del_vecino =  list(G.successors(v))
                     for vdv in vecinos_del_vecino:
                         if G[v][vdv]['color'] == 'blue':
                             nodos_respondidos.append(v)
-                            pregunta(G,v)
-                            resposta(G,vdv)
-
-                            opc = input()
-                            auxopc = opc
-
+                            p = pregunta(G, v)
+                            r = resposta(G, vdv)
+                            #print(str(c_node + '> ' + p + '\n' + r))
+                            #opc = input()
+                            bot.send_message(chat_id=update.message.chat_id, text=str(c_node  + '> ' + p + '\n' +  r))
+                            opc = update.message.text
                 stack.push(v)
         visited.append(c_node)
 
@@ -121,7 +123,9 @@ def dfs_alternativa(G,PID,opc):
 
 
 
-def dfs_encuesta(G,EID):
+def dfs_encuesta(bot,update,user_data,G,EID):
+
+    print(user_data)
 
     stack = Stack()
     stack.push(EID)
@@ -138,14 +142,20 @@ def dfs_encuesta(G,EID):
                         opc = 'opc'
                         for vdv in vecinos_del_vecino:
                             if G[v][vdv]['color'] == 'blue':
-                                pregunta(G,v)
-                                resposta(G,vdv)
-                                opc = input()
+
+                                p = pregunta(G,v)
+                                r = resposta(G,vdv)
+                                #print(str(c_node + '> ' + p + '\n' + r))
+                                #opc = input()
+                                bot.send_message(chat_id=update.message.chat_id, text=str(c_node + '> ' + p + '\n' + r))
+                                opc = update.message.text
+
+
                         for vdv in vecinos_del_vecino:
                             if G[v][vdv]['color'] == 'green':
 
                                 if (G[v][vdv]['label'] == opc):
-                                    nodos_respondidos = dfs_alternativa(G,v,opc)
+                                    nodos_respondidos = dfs_alternativa(bot,update,user_data ,G,v,opc)
                                     for i in range(len(nodos_respondidos)):
                                         visited.append(nodos_respondidos[i])
 
@@ -180,13 +190,14 @@ def author(bot, update):
 
 
 
-def quiz(bot, update, args):
+def quiz(bot, update, args, user_data):
     try:
+
         G = load_graph()
         EID = args[0]
-        bot.send_message(chat_id=update.message.chat_id, text=EID)
-        sentence = update.message.text
-        print(sentence)
+        dfs_encuesta(bot,update,user_data,G,EID)
+
+
     except Exception as e:
         print(e)
         bot.send_message(chat_id=update.message.chat_id, text='💣')
@@ -204,7 +215,6 @@ def bar(bot, update, args):
 
 def pie(bot, update, args):
     try:
-
         bot.send_message(chat_id=update.message.chat_id, text='pie')
     except Exception as e:
         print(e)
@@ -219,13 +229,6 @@ def report(bot, update):
         bot.send_message(chat_id=update.message.chat_id, text='💣')
 
 
-def mesghand():
-    print('mesghand')
-
-
-
-
-
 def main():
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
     TOKEN = open('token.txt').read().strip()
@@ -234,11 +237,13 @@ def main():
     dispatcher.add_handler(CommandHandler('start', start))
     dispatcher.add_handler(CommandHandler('help', help))
     dispatcher.add_handler(CommandHandler('author', author))
-    dispatcher.add_handler(CommandHandler('quiz', quiz, pass_args=True))
+    dispatcher.add_handler(CommandHandler('quiz', quiz, pass_args=True,pass_user_data = True))
     dispatcher.add_handler(CommandHandler('pie', pie, pass_args=True))
     dispatcher.add_handler(CommandHandler('bar', bar, pass_args=True))
     dispatcher.add_handler(CommandHandler('report', report))
-    dispatcher.add_handler(MessageHandler(filters=telegram.ext.filters.Filters.all,callback=mesghand,pass_user_data=True))
+
+    dispatcher.add_handler(MessageHandler(Filters.text, dfs_encuesta,pass_user_data=True))
+
     updater.start_polling()
 
 if __name__ == '__main__':
