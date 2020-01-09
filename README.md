@@ -1,6 +1,6 @@
 # Bot de Telegram para hacer encuestas
 
-## Autores
+## Autor
 * **Ali Muhammad Shiekh** 
 ## Empezando
 Para la parte de compiladores, es decir, compilar los inputs
@@ -10,27 +10,27 @@ y ver el renderizado del grafo resultante:
 
 Todo los comandos para esto se hacen estando en la carpeta de cl
 
-Todo lo que tenga ver con el bot, su ejecucion y la interacion hay estar en la carpeta bot y 
+Todo lo que tenga ver con el bot, su ejecucion y la interacion hay estar en la carpeta bot, y 
 ejecutarlo en la misma carpeta bot.
 
 Los pickles se generan cada uno en su carpeta, graph.pickle en carpeta /cl.
-stats.pickle en la carpeta /bot. (estadisticas de todos los usuarios de las preguntas)
+stats.pickle en la carpeta /bot. (estadisticas de todos los usuarios de todas las preguntas)
 ### Prerequisites
 Tener el entorno configutado siguiendo la guía de LP
 
 ```
 https://gebakx.github.io/Python3/compiladors.html#2
 ```
-###RESUMEN PARA EJECUTAR TODO CON LA FINALIDAD DE PROBARLO.
+###### RESUMEN PARA EJECUTAR TODO CON LA FINALIDAD DE PROBARLO.
 
 ```
 https://gebakx.github.io/Python3/compiladors.html#2
 ```
-## Running the tests
+## Tests
 
-#### compilado y renderizado de grafo:
+#### Compilado y renderizado de grafo:
 ##### Ejemplo 1:
-En la carpeta /cl ejecutar
+En la carpeta cl ejecutar
 
 ```
 python test.py publicinput.txt
@@ -40,7 +40,7 @@ obtenemos como resultado :
 ![Alt text](./images/publicinput.png?raw=true "publicinput")
 
 ##### Ejemplo 2:
-En la carpeta /cl ejecutar
+En la carpeta cl ejecutar
 
 ```
 python test.py inputmultialternativas.txt
@@ -50,7 +50,7 @@ obtenemos como resultado :
 ![Alt text](./images/inputmultialternativas.png?raw=true "inputmultialternativas")
 
 ##### Ejemplo 3:
-En la carpeta /cl ejecutar
+En la carpeta cl ejecutar
 
 ```
 python test.py inputmultiencuestas.txt
@@ -59,7 +59,7 @@ obtenemos como resultado : con E1,E2,E3 , tres nodos encuesta
 
 ![Alt text](./images/inputmultiencuestas.png?raw=true "inputmultiencuestas")
 
-#### Ejecuacion del bot y reporte
+#### Ejecucion del bot y reporte
 
 
 ##### Ejemplo encuesta:
@@ -70,7 +70,7 @@ Encuesta con multiencuesta empezando des del nodo E3 del grafo del ejemplo 3.
 
 ##### Ejemplo reportes:
 He pintado tambien los que son 0 de la misma pregunta.
-El explode  no se usa.
+El explode  no se ha usado finalmente.
 
 ![Alt text](./images/report.png?raw=true "report")
 ![Alt text](./images/bar.png?raw=true "bar")
@@ -79,6 +79,7 @@ El explode  no se usa.
 
 ## Suposiciones y aclaraciones
 * Todas las encuestas van al nodo END.
+* Siempre hay nodo END.
 * Encuesta puede tener como ID : E, E0, E1...En general, E[0-9]*
 * Pregunta, Respuesta, Item y Alternativa tienen P1,R1,I1,A1...En general, LETRAINICIAL[0-9]+
 * Las opciones de alternativa pueden tener los pares (numero,item), sin coma o con coma.
@@ -87,12 +88,12 @@ El explode  no se usa.
 * Se imprimien en el reporte todas las preguntas con sus opciones, es decir, no depende que hayan sido selecionadas como
  minimo una vez.
 * Mi lenguaje NO contempla la opcion para tildes
-* Depende del sistema operativo la entrada la coje de una sola linea o reconoce bien los EOF por ese motivo he
-dejado dos entrada publicas uno que es input (la publica sin acentos) y inputoneline(publica sin acentos y en una sola
+* Depende del sistema operativo la entrada la coje de una sola linea o reconoce bien los EOF. Por ese motivo he
+dejado dos entradas publicas, una que es publicinput.txt (la publica sin acentos), y otra  publicinputoneline.txt (publica sin acentos y en una sola
 linea todo)
-* La practica esta pensada para que en un mismo grafo haya mas de una encuesta y que hay mas de una alternativa que te
-lleve a otra alternativa si contestas una cierta opcion, es decir, la practica es multiencuesta y multilaternativas.
-Para ver esto tenemos la oneline3e y oneline2a.
+* La practica esta pensada para que en un mismo grafo haya mas de una encuesta y que haya mas de una alternativa que te
+lleve a otra alternativa, si contestas una cierta opcion, es decir, la practica es multiencuesta y multilaternativas.
+Para ver esto tenemos la inputmultiencuestas.txt y inputmultialternativas.txt, respectivamente. 
 
 # El algoritmo de recorrido del bot
 
