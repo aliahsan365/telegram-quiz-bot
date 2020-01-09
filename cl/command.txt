@@ -1,4 +1,0 @@
-antlr4 -Dlanguage=Python3 -no-listener Enquestes.g
-antlr4 -Dlanguage=Python3 -no-listener -visitor Enquestes.g
-
-#nota usar fichero sin "<"
