@@ -108,13 +108,10 @@ python algoritmo.py
 la carpeta cl)
 (NOTA2: la interacion con el algoritmo es por consola, y no por telegram)
 # Problematica con el algoritmo de recorrido del bot
-En el archivo algoritmo.py de la carpeta bot, podemos ver que si le pasamos un grafo, podemos obtener 
-las preguntas de las encuestas, y en funcion de lo que hayamos metido como entrada
-por la entrada estandar (consola) como respuestas a la pregunta, es capaz de ir dandonos las preguntas correctamente. El promblema es esencialmente
-la intereacion con el bot, es decir, el modelo que se nos da para hacer bots en LP de ejemplo, no permite guardar estado automaticamente.
-Es decir, si lo printamos por telegram , acaba dando todas las pregutas por que hace el recorrido sin parar, a menos que lo hagamos por consola (entrada standard)
-
-RESUMEN : El algoritmo acaba NO funcionado por telegram, y si por consola , incluyendo multialternativas en las encuetas , y tambien teniendo más de una encuesta en el grafo.
+El algoritmo acaba NO funcionado por telegram, y si por consola, incluyendo multialternativas en las encuetas, 
+y tambien teniendo más de una encuesta en el grafo. Esto es así, ya que la api de telegram no permite hacer waits para
+los replys del user. De todas formas, se ha implementado un algoritmo no tan elegante como este para resolverlo. Con la 
+nueva  version en (presente en bot.py) podemos ir navegando por las preguntas de las encuestas y mirar las stats y reports
 
 ## Versioning
 Se ha usado Git.
