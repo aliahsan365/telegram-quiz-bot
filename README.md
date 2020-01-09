@@ -39,7 +39,8 @@ Explain how to run the automated tests for this system
 Explain what these tests test and why
 
 ```
-Give an example
+python test.py publicinput.txt
+
 ```
 
 ### And coding style tests

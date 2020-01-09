@@ -127,4 +127,15 @@ def dfs_encuesta(G,EID):
     return visited
 
 
+def load_graph():
+    print('voy a cargar el grafo')
+    pickle_in = open("../cl/graph.pickle","rb")
+    Gin = pickle.load(pickle_in)
+    return Gin
 
+G = load_graph()
+
+#E es el nodo inciail de la encuesta
+dfs_encuesta(G,'E')
+#si input multiencuestahabilitaresto.
+#dfs_encuesta(G,'E3')

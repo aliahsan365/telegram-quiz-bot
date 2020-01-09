@@ -218,119 +218,96 @@ def bar(bot,update,args):
         bot.send_message(chat_id=update.message.chat_id, text='💣')
 
 
-
-
 def quiz(bot, update, args, user_data):
     try:
         EID = args[0]
         user_data['encuesta'] = EID
+        user_data['visited'] = [EID]
+        l =  list(G.successors(EID))
+        p1 = l[0]
+        print(p1)
+        user_data['currentnode'] = p1
         user_data['respuestas'] = dict()
-
-
+        vp1 = list(G.successors(p1))
+        for vdv in vp1:
+            if G[p1][vdv]['color'] == 'blue':
+                p = pregunta(G, p1)
+                r = resposta(G, vdv)
+                bot.send_message(chat_id=update.message.chat_id, text=p)
+                bot.send_message(chat_id=update.message.chat_id, text=str(r))
+                opc = update.message.text
+                user_data['respuestas'][p1] = opc
+                user_data['visited'].append(p1)
     except Exception as e:
         print(e)
-        bot.send_message(chat_id=update.message.chat_id, text='💣')
+        bot.send_message(chat_id=update.message.chat_id, text='??')
 
 
 
-class Stack:
-    def __init__(self):
-        self.items = []
-
-    def isEmpty(self):
-        return self.items == []
-
-    def push(self, item):
-        self.items.append(item)
-
-    def pop(self):
-        return self.items.pop()
-
-    def top(self):
-        return self.items[len(self.items) - 1]
-
-    def size(self):
-        return len(self.items)
-
-
-
-
-def alternativa(bot,update,user_data,v,opc):
-    try:
-        nodos_respondidos = []
-        stack = Stack()
-        stack.push(v)
-        auxopc = opc
-        visited = []
-        while (not stack.isEmpty()):
-            c_node = stack.top()
-            stack.pop()
-            vecinos = list(G.successors(c_node))
-            for v in vecinos:
-                if G[c_node][v]['color'] == 'green':
-                    if G[c_node][v]['label'] == auxopc:
-                        vecinos_del_vecino = list(G.successors(v))
-                        for vdv in vecinos_del_vecino:
-                            if G[v][vdv]['color'] == 'blue':
-                                nodos_respondidos.append(v)
-                                p = pregunta(G, v)
-                                r = resposta(G, vdv)
-                                bot.send_message(chat_id=update.message.chat_id, text=p)
-                                bot.send_message(chat_id=update.message.chat_id, text=r)
-
-                                opc = update.message.text
-                                auxopc = opc
-
-                    stack.push(v)
-            visited.append(c_node)
-
-        return nodos_respondidos
-
-
-    except Exception as e:
-        print(e)
-        bot.send_message(chat_id=update.message.chat_id, text='💣')
 
 
 def encuesta(bot,update,user_data):
     try:
+        (next_node,opc) = nextpreg(bot,update,user_data)
+        if (next_node == 'END'):
 
-        stack = Stack()
-        stack.push(user_data['encuesta'])
-        visited = []
-        while (not stack.isEmpty()):
-            c_node = stack.top()
-            stack.pop()
-            vecinos = list(G.successors(c_node))
-            for v in vecinos:
-                if (not (v in visited)):
-                    if (G[c_node][v]['color'] == 'black' and G[c_node][v]['senyal'] == user_data['encuesta']):
-                        if G.nodes[v]['tipo'] == "pregunta":
-                            vecinos_del_vecino = list(G.successors(v))
-                            opc = 'opc'
-                            for vdv in vecinos_del_vecino:
-                                if G[v][vdv]['color'] == 'blue':
-                                    p = pregunta(G, v)
-                                    r = resposta(G, vdv)
-                                    bot.send_message(chat_id=update.message.chat_id, text=p)
-                                    bot.send_message(chat_id=update.message.chat_id, text=r)
-                                    opc = update.message.text
-                            for vdv in vecinos_del_vecino:
-                                if G[v][vdv]['color'] == 'green':
-
-                                    if (G[v][vdv]['label'] == opc):
-                                        nodos_respondidos = alternativa(bot,update,user_data, v, opc)
-                                        for i in range(len(nodos_respondidos)):
-                                            visited.append(nodos_respondidos[i])
-
-                        stack.push(v)
-            visited.append(c_node)
-        return visited
-
+            bot.send_message(chat_id=update.message.chat_id, text='gracias por contestar, hijo de puta!')
+        else:
+            user_data['respuestas'][next_node] = opc
+            bot.send_message(chat_id=update.message.chat_id, text=str(user_data['respuestas']))
+            save_stats(store_stats(load_stats(),user_data['respuestas']))
+            print(load_stats())
 
     except Exception as e:
         print(e)
-        bot.send_message(chat_id=update.message.chat_id, text='💣')
+        bot.send_message(chat_id=update.message.chat_id, text='??')
+
+
+
+
+########################## END HANDLER FUNCTIONS#########################
+
+
+
+
+
+
+def nextpreg(bot,update,user_data):
+
+    c_node = user_data['currentnode']
+    vecinos = list(G.successors(c_node))
+    next_node = 'next'
+    opc = update.message.text
+
+
+    for v in vecinos:
+        if not (v in user_data['visited']):
+
+            if (G[c_node][v]['color'] == 'black' and G[c_node][v]['senyal'] == user_data['encuesta']):
+                if G.nodes[v]['tipo'] == "pregunta":
+                    vecinos_del_vecino = list(G.successors(v))
+                    for vdv in vecinos_del_vecino:
+                        if G[v][vdv]['color'] == 'blue':
+                            p = pregunta(G, v)
+                            r =  resposta(G, vdv)
+                            bot.send_message(chat_id=update.message.chat_id, text=p)
+                            bot.send_message(chat_id=update.message.chat_id, text=str(r))
+                            opc = update.message.text
+
+                            next_node = v
+
+                            user_data['currentnode'] = v
+                            user_data['visited'].append(c_node)
+
+    return (c_node,opc)
+
+
+
+
+
+
+
+#################### END LOGICS
 
 
 
