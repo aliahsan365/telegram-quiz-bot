@@ -1,4 +1,4 @@
-# BOT enquestes
+# Bot de Telegram para hacer encuestas
 
 ## Getting Started
 

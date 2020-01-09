@@ -163,7 +163,14 @@ def dfs_encuesta(bot,update,user_data,G,EID):
         visited.append(c_node)
     return visited
 
+##############################stats#######
 
+
+
+
+
+
+##################
 
 
 

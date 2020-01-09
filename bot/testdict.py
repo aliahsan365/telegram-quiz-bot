@@ -11,27 +11,13 @@ import pickle
 from pathlib import Path
 
 
-
-
-
-user_data1 = dict()
-
-user_data1 = {'p1': 'Carlos', 'edad': 22, 'cursos': ['Python', 'Django', 'JavaScript']}
-
-for e in user_data1:
-    print(e)
-    print(user_data1[e])
-
-
 def load_graph():
     pickle_in = open("../cl/graph.pickle","rb")
     Gin = pickle.load(pickle_in)
     return Gin
 
-
 G = load_graph()
 
-print(G.nodes,G.edges)
 
 stats = dict()
 
@@ -43,6 +29,19 @@ def get_nodos_preguntas(nodos):
     print(preguntas)
     return preguntas
 
+def get_dict_resposta_key(lpares):
+    res = dict()
+    opcs = []
+    for par in lpares:
+        opcs.append(par[0])
+    res = dict.fromkeys(opcs, 0)
+    print(res)
+    return res
+
+
+
+
+
 def get_nodos_respuestas(nodos):
     respuestas = []
     for n in  nodos:
@@ -51,6 +50,20 @@ def get_nodos_respuestas(nodos):
             respuestas.append(l)
 
     return respuestas
+
+def get_pregunta_opc_respuestas(pnodes):
+    pares_preguna_opcrespuesta = []
+    for pid in pnodes:
+        vecinop = list(G.successors(pid))
+        for vdv in vecinop :
+            if G[pid][vdv]['color'] == 'blue':
+                r = G.nodes[vdv]['content']
+                pares = (pid,r)
+                pares_preguna_opcrespuesta.append(pares)
+    return pares_preguna_opcrespuesta
+
+
+
 
 
 
@@ -64,6 +77,23 @@ def ini_stats():
 
     rnodes = get_nodos_respuestas(nodos)
     print(rnodes)
+    todo = get_pregunta_opc_respuestas(pnodes)
+
+    for t in todo:
+        stats[t[0]] = get_dict_resposta_key(t[1])
+    print(stats)
+
+    #stats['P1']['1'] = stats['P1']['1'] + 60
+    #print(stats)
+    respuestas = dict(P1='2', P2='0', P3=3)
+    #print(respuestas)
+    for r in respuestas:
+        print(stats[r][str(respuestas[r])])
+        print(r,respuestas[r])
+        stats[r][str(respuestas[r])] = stats[r][str(respuestas[r])] + 1
+    print('imprimo stats final final')
+    print(stats)
+
 
 
 
