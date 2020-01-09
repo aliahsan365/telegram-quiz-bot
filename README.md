@@ -2,46 +2,61 @@
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Para la parte de compiladores, es decir, compilar los inputs
+y ver el renderizado del grafo resultante hay que estar en la carpeta "cl"
+Todo los comandos para esto se hacen estando en la carta de "cl"
+
+Todo lo que tenga ver con el bot, su ejecucion y la intereacion hay estar en la carpeta bot y ejecutarlo en la misma carpeta.
+
+Los pickles se generan cada uno en su carpeta , graph.pickle en carpeta cl
+stats.pickle en la carpeta bot (estadisticas de todos los usuarios)
+
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+Tener el entrno configutado siguiendo la guía de LP
 
 ```
-Give examples
+https://gebakx.github.io/Python3/compiladors.html#2
 ```
 
-### Installing
 
-A step by step series of examples that tell you how to get a development env running
 
-Say what the step will be
 
-```
-Give the example
-```
+el algoritmo acaba no funcionado por telegram , y si por consola.
 
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
 
 ## Running the tests
 
-Explain how to run the automated tests for this system
+Todo hay que ejecutarlo en la carpeta test
 
-### Break down into end to end tests
 
-Explain what these tests test and why
+
+###Ejemplo de reporte, se imprimen tambien las opciones que no han sido contestadas
+
+
+![Alt text](./images/report.png?raw=true "report")
+![Alt text](./images/bar.png?raw=true "bar")
+![Alt text](./images/pie.png?raw=true "pie")
+### Ejemplo de test mas de una encuesta en el mismo fichero (multiencuestas)
+
+En el caso de juegos publicos tenemos que ejecutando esto
 
 ```
-python test.py publicinput.txt
+python test.py inputmultiencuestas.txt
 
 ```
+obtenemos esto : 
+![Alt text](./images/inputmultiencuestas.png?raw=true "inputmultiencuestas")
+
+En el caso de juegos publicos tenemos que ejecutando esto
+
+```
+python test.py inputmultiencuestas.txt
+
+```
+obtenemos esto : 
+![Alt text](./images/inputmultiencuestas.png?raw=true "inputmultiencuestas")
 
 ### And coding style tests
 
@@ -53,13 +68,14 @@ Give an example
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+```
+Give an example
+```
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* [antlr4](https://www.antlr.org/) - antlr4 python
+
 
 ## Contributing
 
@@ -86,11 +102,17 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 * Dos o mas preguntas pueden tener la misma respuesta.
 * Una pregunta tiene exactamente una respuesta.
 * Se imprimien en el reporte todas las preguntas con sus opciones, es decir, no depende que hayan sido selecionadas como
-como minimo una vez.
-* Mi lenguaje no contempla la opcion para tildes
+ minimo una vez.
+* Mi lenguaje NO contempla la opcion para tildes
 * Depende del sistema operativo la entrada la coje de una sola linea o reconoce bien los EOF por ese motivo he
 dejado dos entrada publicas uno que es input (la publica sin acentos) y inputoneline(publica sin acentos y en una sola
 linea todo)
 * La practica esta pensada para que en un mismo grafo haya mas de una encuesta y que hay mas de una alternativa que te
 lleve a otra alternativa si contestas una cierta opcion, es decir, la practica es multiencuesta y multilaternativas.
 Para ver esto tenemos la oneline3e y oneline2a.
+# Problematica con el algoritmo de recorrido del bot
+En el archivo ./bot/algoritmo.py, que podemos ejecutar usando [exec] , podemos ver que si le pasamos un grafo , podemos obtener 
+las preguntas de las encuestas, y en funcion de lo que hayamos metido como entrada
+por la entrada standar (consola), es capaz de ir dandonos las preguntas correctamente. El promblema es esencialmente
+la intereacion con el bot , es decir, el modelo que se nos da para hacer bots en LP de ejemplo, no permite guardar estado automaticamente,
+el algoritmo acaba NO funcionado por telegram , y si por consola , incluyendo multialternativas en las encuetas , y tambien teniendo más de una encuesta en el grafo.
