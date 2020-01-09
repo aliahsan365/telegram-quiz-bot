@@ -4,3 +4,4 @@ pickle==3.3
 python-telegram-bot
 numpy==1.18.0
 antlr4-python3-runtime
+autopep8==1.4.4

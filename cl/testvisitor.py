@@ -23,6 +23,7 @@ def render_graph(G):
     nx.draw_networkx_edge_labels(G, layout, edge_labels=tags)
     plt.show()
 
+
 if len(sys.argv) > 1:
     input_stream = FileStream(sys.argv[1])
 else:
@@ -36,6 +37,7 @@ visitor = EnquestesVisitor(G)
 visitor.visit(tree)
 render_graph(G)
 save_graph(G)
+
 
 
 
