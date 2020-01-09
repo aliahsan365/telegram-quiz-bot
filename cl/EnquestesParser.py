@@ -1,9 +1,11 @@
 # Generated from Enquestes.g by ANTLR 4.7.1
 # encoding: utf-8
-from antlr4 import *
+import sys
 from io import StringIO
 from typing.io import TextIO
-import sys
+
+from antlr4 import *
+
 
 def serializedATN():
     with StringIO() as buf:
@@ -46,26 +48,25 @@ def serializedATN():
         return buf.getvalue()
 
 
-class EnquestesParser ( Parser ):
-
+class EnquestesParser(Parser):
     grammarFileName = "Enquestes.g"
 
     atn = ATNDeserializer().deserialize(serializedATN())
 
-    decisionsToDFA = [ DFA(ds, i) for i, ds in enumerate(atn.decisionToState) ]
+    decisionsToDFA = [DFA(ds, i) for i, ds in enumerate(atn.decisionToState)]
 
     sharedContextCache = PredictionContextCache()
 
-    literalNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
-                     "<INVALID>", "<INVALID>", "','", "'['", "']'", "'('", 
-                     "')'", "'ENQUESTA'", "'ITEM'", "'PREGUNTA'", "'RESPOSTA'", 
-                     "'ALTERNATIVA'", "';'", "'->'", "<INVALID>", "'END'", 
-                     "<INVALID>", "':'", "'?'" ]
+    literalNames = ["<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>",
+                    "<INVALID>", "<INVALID>", "','", "'['", "']'", "'('",
+                    "')'", "'ENQUESTA'", "'ITEM'", "'PREGUNTA'", "'RESPOSTA'",
+                    "'ALTERNATIVA'", "';'", "'->'", "<INVALID>", "'END'",
+                    "<INVALID>", "':'", "'?'"]
 
-    symbolicNames = [ "<INVALID>", "AID", "EID", "IID", "RID", "PID", "COMA", 
-                      "CE", "CD", "PE", "PR", "ENQUESTA", "ELEMENT", "PREGUNTA", 
-                      "RESPOSTA", "ALTERNATIVA", "PUNTCOMA", "FLETXA", "NUMERO", 
-                      "FINAL", "PARAULES", "PUNTS", "SIGNEPREGUNTA", "WS" ]
+    symbolicNames = ["<INVALID>", "AID", "EID", "IID", "RID", "PID", "COMA",
+                     "CE", "CD", "PE", "PR", "ENQUESTA", "ELEMENT", "PREGUNTA",
+                     "RESPOSTA", "ALTERNATIVA", "PUNTCOMA", "FLETXA", "NUMERO",
+                     "FINAL", "PARAULES", "PUNTS", "SIGNEPREGUNTA", "WS"]
 
     RULE_root = 0
     RULE_blocs = 1
@@ -80,52 +81,49 @@ class EnquestesParser ( Parser ):
     RULE_respostaelement = 10
     RULE_enquesta = 11
 
-    ruleNames =  [ "root", "blocs", "pregunta", "resposta", "opcio", "element", 
-                   "relacio", "alternativa", "implications", "blocrespostaelement", 
-                   "respostaelement", "enquesta" ]
+    ruleNames = ["root", "blocs", "pregunta", "resposta", "opcio", "element",
+                 "relacio", "alternativa", "implications", "blocrespostaelement",
+                 "respostaelement", "enquesta"]
 
     EOF = Token.EOF
-    AID=1
-    EID=2
-    IID=3
-    RID=4
-    PID=5
-    COMA=6
-    CE=7
-    CD=8
-    PE=9
-    PR=10
-    ENQUESTA=11
-    ELEMENT=12
-    PREGUNTA=13
-    RESPOSTA=14
-    ALTERNATIVA=15
-    PUNTCOMA=16
-    FLETXA=17
-    NUMERO=18
-    FINAL=19
-    PARAULES=20
-    PUNTS=21
-    SIGNEPREGUNTA=22
-    WS=23
+    AID = 1
+    EID = 2
+    IID = 3
+    RID = 4
+    PID = 5
+    COMA = 6
+    CE = 7
+    CD = 8
+    PE = 9
+    PR = 10
+    ENQUESTA = 11
+    ELEMENT = 12
+    PREGUNTA = 13
+    RESPOSTA = 14
+    ALTERNATIVA = 15
+    PUNTCOMA = 16
+    FLETXA = 17
+    NUMERO = 18
+    FINAL = 19
+    PARAULES = 20
+    PUNTS = 21
+    SIGNEPREGUNTA = 22
+    WS = 23
 
-    def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
+    def __init__(self, input: TokenStream, output: TextIO = sys.stdout):
         super().__init__(input, output)
         self.checkVersion("4.7.1")
         self._interp = ParserATNSimulator(self, self.atn, self.decisionsToDFA, self.sharedContextCache)
         self._predicates = None
 
-
-
     class RootContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
         def blocs(self):
-            return self.getTypedRuleContext(EnquestesParser.BlocsContext,0)
-
+            return self.getTypedRuleContext(EnquestesParser.BlocsContext, 0)
 
         def FINAL(self):
             return self.getToken(EnquestesParser.FINAL, 0)
@@ -136,14 +134,11 @@ class EnquestesParser ( Parser ):
         def getRuleIndex(self):
             return EnquestesParser.RULE_root
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitRoot" ):
+        def accept(self, visitor: ParseTreeVisitor):
+            if hasattr(visitor, "visitRoot"):
                 return visitor.visitRoot(self)
             else:
                 return visitor.visitChildren(self)
-
-
-
 
     def root(self):
 
@@ -167,68 +162,62 @@ class EnquestesParser ( Parser ):
 
     class BlocsContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def pregunta(self, i:int=None):
+        def pregunta(self, i: int = None):
             if i is None:
                 return self.getTypedRuleContexts(EnquestesParser.PreguntaContext)
             else:
-                return self.getTypedRuleContext(EnquestesParser.PreguntaContext,i)
+                return self.getTypedRuleContext(EnquestesParser.PreguntaContext, i)
 
-
-        def resposta(self, i:int=None):
+        def resposta(self, i: int = None):
             if i is None:
                 return self.getTypedRuleContexts(EnquestesParser.RespostaContext)
             else:
-                return self.getTypedRuleContext(EnquestesParser.RespostaContext,i)
+                return self.getTypedRuleContext(EnquestesParser.RespostaContext, i)
 
-
-        def element(self, i:int=None):
+        def element(self, i: int = None):
             if i is None:
                 return self.getTypedRuleContexts(EnquestesParser.ElementContext)
             else:
-                return self.getTypedRuleContext(EnquestesParser.ElementContext,i)
+                return self.getTypedRuleContext(EnquestesParser.ElementContext, i)
 
-
-        def alternativa(self, i:int=None):
+        def alternativa(self, i: int = None):
             if i is None:
                 return self.getTypedRuleContexts(EnquestesParser.AlternativaContext)
             else:
-                return self.getTypedRuleContext(EnquestesParser.AlternativaContext,i)
+                return self.getTypedRuleContext(EnquestesParser.AlternativaContext, i)
 
-
-        def enquesta(self, i:int=None):
+        def enquesta(self, i: int = None):
             if i is None:
                 return self.getTypedRuleContexts(EnquestesParser.EnquestaContext)
             else:
-                return self.getTypedRuleContext(EnquestesParser.EnquestaContext,i)
-
+                return self.getTypedRuleContext(EnquestesParser.EnquestaContext, i)
 
         def getRuleIndex(self):
             return EnquestesParser.RULE_blocs
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitBlocs" ):
+        def accept(self, visitor: ParseTreeVisitor):
+            if hasattr(visitor, "visitBlocs"):
                 return visitor.visitBlocs(self)
             else:
                 return visitor.visitChildren(self)
-
-
-
 
     def blocs(self):
 
         localctx = EnquestesParser.BlocsContext(self, self._ctx, self.state)
         self.enterRule(localctx, 2, self.RULE_blocs)
-        self._la = 0 # Token type
+        self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 35
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << EnquestesParser.AID) | (1 << EnquestesParser.EID) | (1 << EnquestesParser.IID) | (1 << EnquestesParser.RID) | (1 << EnquestesParser.PID))) != 0):
+            while (((_la) & ~0x3f) == 0 and ((1 << _la) & (
+                    (1 << EnquestesParser.AID) | (1 << EnquestesParser.EID) | (1 << EnquestesParser.IID) | (
+                    1 << EnquestesParser.RID) | (1 << EnquestesParser.PID))) != 0):
                 self.state = 33
                 self._errHandler.sync(self)
                 token = self._input.LA(1)
@@ -269,7 +258,7 @@ class EnquestesParser ( Parser ):
 
     class PreguntaContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -285,7 +274,7 @@ class EnquestesParser ( Parser ):
         def SIGNEPREGUNTA(self):
             return self.getToken(EnquestesParser.SIGNEPREGUNTA, 0)
 
-        def PARAULES(self, i:int=None):
+        def PARAULES(self, i: int = None):
             if i is None:
                 return self.getTokens(EnquestesParser.PARAULES)
             else:
@@ -294,20 +283,17 @@ class EnquestesParser ( Parser ):
         def getRuleIndex(self):
             return EnquestesParser.RULE_pregunta
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitPregunta" ):
+        def accept(self, visitor: ParseTreeVisitor):
+            if hasattr(visitor, "visitPregunta"):
                 return visitor.visitPregunta(self)
             else:
                 return visitor.visitChildren(self)
-
-
-
 
     def pregunta(self):
 
         localctx = EnquestesParser.PreguntaContext(self, self._ctx, self.state)
         self.enterRule(localctx, 4, self.RULE_pregunta)
-        self._la = 0 # Token type
+        self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 38
@@ -319,7 +305,7 @@ class EnquestesParser ( Parser ):
             self.state = 44
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while _la==EnquestesParser.PARAULES:
+            while _la == EnquestesParser.PARAULES:
                 self.state = 41
                 self.match(EnquestesParser.PARAULES)
                 self.state = 46
@@ -338,7 +324,7 @@ class EnquestesParser ( Parser ):
 
     class RespostaContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -351,30 +337,26 @@ class EnquestesParser ( Parser ):
         def RESPOSTA(self):
             return self.getToken(EnquestesParser.RESPOSTA, 0)
 
-        def opcio(self, i:int=None):
+        def opcio(self, i: int = None):
             if i is None:
                 return self.getTypedRuleContexts(EnquestesParser.OpcioContext)
             else:
-                return self.getTypedRuleContext(EnquestesParser.OpcioContext,i)
-
+                return self.getTypedRuleContext(EnquestesParser.OpcioContext, i)
 
         def getRuleIndex(self):
             return EnquestesParser.RULE_resposta
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitResposta" ):
+        def accept(self, visitor: ParseTreeVisitor):
+            if hasattr(visitor, "visitResposta"):
                 return visitor.visitResposta(self)
             else:
                 return visitor.visitChildren(self)
-
-
-
 
     def resposta(self):
 
         localctx = EnquestesParser.RespostaContext(self, self._ctx, self.state)
         self.enterRule(localctx, 6, self.RULE_resposta)
-        self._la = 0 # Token type
+        self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 49
@@ -386,7 +368,7 @@ class EnquestesParser ( Parser ):
             self.state = 55
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while _la==EnquestesParser.NUMERO:
+            while _la == EnquestesParser.NUMERO:
                 self.state = 52
                 self.opcio()
                 self.state = 57
@@ -403,7 +385,7 @@ class EnquestesParser ( Parser ):
 
     class OpcioContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -416,7 +398,7 @@ class EnquestesParser ( Parser ):
         def PUNTCOMA(self):
             return self.getToken(EnquestesParser.PUNTCOMA, 0)
 
-        def PARAULES(self, i:int=None):
+        def PARAULES(self, i: int = None):
             if i is None:
                 return self.getTokens(EnquestesParser.PARAULES)
             else:
@@ -425,20 +407,17 @@ class EnquestesParser ( Parser ):
         def getRuleIndex(self):
             return EnquestesParser.RULE_opcio
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitOpcio" ):
+        def accept(self, visitor: ParseTreeVisitor):
+            if hasattr(visitor, "visitOpcio"):
                 return visitor.visitOpcio(self)
             else:
                 return visitor.visitChildren(self)
-
-
-
 
     def opcio(self):
 
         localctx = EnquestesParser.OpcioContext(self, self._ctx, self.state)
         self.enterRule(localctx, 8, self.RULE_opcio)
-        self._la = 0 # Token type
+        self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 58
@@ -448,7 +427,7 @@ class EnquestesParser ( Parser ):
             self.state = 63
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while _la==EnquestesParser.PARAULES:
+            while _la == EnquestesParser.PARAULES:
                 self.state = 60
                 self.match(EnquestesParser.PARAULES)
                 self.state = 65
@@ -467,7 +446,7 @@ class EnquestesParser ( Parser ):
 
     class ElementContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -480,24 +459,20 @@ class EnquestesParser ( Parser ):
         def ELEMENT(self):
             return self.getToken(EnquestesParser.ELEMENT, 0)
 
-        def relacio(self, i:int=None):
+        def relacio(self, i: int = None):
             if i is None:
                 return self.getTypedRuleContexts(EnquestesParser.RelacioContext)
             else:
-                return self.getTypedRuleContext(EnquestesParser.RelacioContext,i)
-
+                return self.getTypedRuleContext(EnquestesParser.RelacioContext, i)
 
         def getRuleIndex(self):
             return EnquestesParser.RULE_element
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitElement" ):
+        def accept(self, visitor: ParseTreeVisitor):
+            if hasattr(visitor, "visitElement"):
                 return visitor.visitElement(self)
             else:
                 return visitor.visitChildren(self)
-
-
-
 
     def element(self):
 
@@ -513,14 +488,14 @@ class EnquestesParser ( Parser ):
             self.match(EnquestesParser.ELEMENT)
             self.state = 74
             self._errHandler.sync(self)
-            _alt = self._interp.adaptivePredict(self._input,5,self._ctx)
-            while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
-                if _alt==1:
+            _alt = self._interp.adaptivePredict(self._input, 5, self._ctx)
+            while _alt != 2 and _alt != ATN.INVALID_ALT_NUMBER:
+                if _alt == 1:
                     self.state = 71
-                    self.relacio() 
+                    self.relacio()
                 self.state = 76
                 self._errHandler.sync(self)
-                _alt = self._interp.adaptivePredict(self._input,5,self._ctx)
+                _alt = self._interp.adaptivePredict(self._input, 5, self._ctx)
 
         except RecognitionException as re:
             localctx.exception = re
@@ -532,7 +507,7 @@ class EnquestesParser ( Parser ):
 
     class RelacioContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -548,14 +523,11 @@ class EnquestesParser ( Parser ):
         def getRuleIndex(self):
             return EnquestesParser.RULE_relacio
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitRelacio" ):
+        def accept(self, visitor: ParseTreeVisitor):
+            if hasattr(visitor, "visitRelacio"):
                 return visitor.visitRelacio(self)
             else:
                 return visitor.visitChildren(self)
-
-
-
 
     def relacio(self):
 
@@ -579,7 +551,7 @@ class EnquestesParser ( Parser ):
 
     class AlternativaContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -593,20 +565,16 @@ class EnquestesParser ( Parser ):
             return self.getToken(EnquestesParser.ALTERNATIVA, 0)
 
         def implications(self):
-            return self.getTypedRuleContext(EnquestesParser.ImplicationsContext,0)
-
+            return self.getTypedRuleContext(EnquestesParser.ImplicationsContext, 0)
 
         def getRuleIndex(self):
             return EnquestesParser.RULE_alternativa
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitAlternativa" ):
+        def accept(self, visitor: ParseTreeVisitor):
+            if hasattr(visitor, "visitAlternativa"):
                 return visitor.visitAlternativa(self)
             else:
                 return visitor.visitChildren(self)
-
-
-
 
     def alternativa(self):
 
@@ -632,7 +600,7 @@ class EnquestesParser ( Parser ):
 
     class ImplicationsContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -643,8 +611,7 @@ class EnquestesParser ( Parser ):
             return self.getToken(EnquestesParser.CE, 0)
 
         def blocrespostaelement(self):
-            return self.getTypedRuleContext(EnquestesParser.BlocrespostaelementContext,0)
-
+            return self.getTypedRuleContext(EnquestesParser.BlocrespostaelementContext, 0)
 
         def CD(self):
             return self.getToken(EnquestesParser.CD, 0)
@@ -652,14 +619,11 @@ class EnquestesParser ( Parser ):
         def getRuleIndex(self):
             return EnquestesParser.RULE_implications
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitImplications" ):
+        def accept(self, visitor: ParseTreeVisitor):
+            if hasattr(visitor, "visitImplications"):
                 return visitor.visitImplications(self)
             else:
                 return visitor.visitChildren(self)
-
-
-
 
     def implications(self):
 
@@ -685,18 +649,17 @@ class EnquestesParser ( Parser ):
 
     class BlocrespostaelementContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def respostaelement(self, i:int=None):
+        def respostaelement(self, i: int = None):
             if i is None:
                 return self.getTypedRuleContexts(EnquestesParser.RespostaelementContext)
             else:
-                return self.getTypedRuleContext(EnquestesParser.RespostaelementContext,i)
+                return self.getTypedRuleContext(EnquestesParser.RespostaelementContext, i)
 
-
-        def COMA(self, i:int=None):
+        def COMA(self, i: int = None):
             if i is None:
                 return self.getTokens(EnquestesParser.COMA)
             else:
@@ -705,29 +668,26 @@ class EnquestesParser ( Parser ):
         def getRuleIndex(self):
             return EnquestesParser.RULE_blocrespostaelement
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitBlocrespostaelement" ):
+        def accept(self, visitor: ParseTreeVisitor):
+            if hasattr(visitor, "visitBlocrespostaelement"):
                 return visitor.visitBlocrespostaelement(self)
             else:
                 return visitor.visitChildren(self)
-
-
-
 
     def blocrespostaelement(self):
 
         localctx = EnquestesParser.BlocrespostaelementContext(self, self._ctx, self.state)
         self.enterRule(localctx, 18, self.RULE_blocrespostaelement)
-        self._la = 0 # Token type
+        self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 97
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while _la==EnquestesParser.PE:
+            while _la == EnquestesParser.PE:
                 self.state = 95
                 self._errHandler.sync(self)
-                la_ = self._interp.adaptivePredict(self._input,6,self._ctx)
+                la_ = self._interp.adaptivePredict(self._input, 6, self._ctx)
                 if la_ == 1:
                     self.state = 91
                     self.respostaelement()
@@ -739,7 +699,6 @@ class EnquestesParser ( Parser ):
                     self.state = 94
                     self.respostaelement()
                     pass
-
 
                 self.state = 99
                 self._errHandler.sync(self)
@@ -755,7 +714,7 @@ class EnquestesParser ( Parser ):
 
     class RespostaelementContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -777,14 +736,11 @@ class EnquestesParser ( Parser ):
         def getRuleIndex(self):
             return EnquestesParser.RULE_respostaelement
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitRespostaelement" ):
+        def accept(self, visitor: ParseTreeVisitor):
+            if hasattr(visitor, "visitRespostaelement"):
                 return visitor.visitRespostaelement(self)
             else:
                 return visitor.visitChildren(self)
-
-
-
 
     def respostaelement(self):
 
@@ -812,7 +768,7 @@ class EnquestesParser ( Parser ):
 
     class EnquestaContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -825,7 +781,7 @@ class EnquestesParser ( Parser ):
         def ENQUESTA(self):
             return self.getToken(EnquestesParser.ENQUESTA, 0)
 
-        def IID(self, i:int=None):
+        def IID(self, i: int = None):
             if i is None:
                 return self.getTokens(EnquestesParser.IID)
             else:
@@ -834,14 +790,11 @@ class EnquestesParser ( Parser ):
         def getRuleIndex(self):
             return EnquestesParser.RULE_enquesta
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitEnquesta" ):
+        def accept(self, visitor: ParseTreeVisitor):
+            if hasattr(visitor, "visitEnquesta"):
                 return visitor.visitEnquesta(self)
             else:
                 return visitor.visitChildren(self)
-
-
-
 
     def enquesta(self):
 
@@ -857,14 +810,14 @@ class EnquestesParser ( Parser ):
             self.match(EnquestesParser.ENQUESTA)
             self.state = 112
             self._errHandler.sync(self)
-            _alt = self._interp.adaptivePredict(self._input,8,self._ctx)
-            while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
-                if _alt==1:
+            _alt = self._interp.adaptivePredict(self._input, 8, self._ctx)
+            while _alt != 2 and _alt != ATN.INVALID_ALT_NUMBER:
+                if _alt == 1:
                     self.state = 109
-                    self.match(EnquestesParser.IID) 
+                    self.match(EnquestesParser.IID)
                 self.state = 114
                 self._errHandler.sync(self)
-                _alt = self._interp.adaptivePredict(self._input,8,self._ctx)
+                _alt = self._interp.adaptivePredict(self._input, 8, self._ctx)
 
         except RecognitionException as re:
             localctx.exception = re
@@ -873,8 +826,3 @@ class EnquestesParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
-
-
-
-

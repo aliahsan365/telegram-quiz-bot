@@ -1,8 +1,9 @@
 # Generated from Enquestes.g by ANTLR 4.7.1
-from antlr4 import *
+import sys
 from io import StringIO
 from typing.io import TextIO
-import sys
+
+from antlr4 import *
 
 
 def serializedATN():
@@ -71,10 +72,9 @@ def serializedATN():
 
 
 class EnquestesLexer(Lexer):
-
     atn = ATNDeserializer().deserialize(serializedATN())
 
-    decisionsToDFA = [ DFA(ds, i) for i, ds in enumerate(atn.decisionToState) ]
+    decisionsToDFA = [DFA(ds, i) for i, ds in enumerate(atn.decisionToState)]
 
     AID = 1
     EID = 2
@@ -100,33 +100,31 @@ class EnquestesLexer(Lexer):
     SIGNEPREGUNTA = 22
     WS = 23
 
-    channelNames = [ u"DEFAULT_TOKEN_CHANNEL", u"HIDDEN" ]
+    channelNames = [u"DEFAULT_TOKEN_CHANNEL", u"HIDDEN"]
 
-    modeNames = [ "DEFAULT_MODE" ]
+    modeNames = ["DEFAULT_MODE"]
 
-    literalNames = [ "<INVALID>",
-            "','", "'['", "']'", "'('", "')'", "'ENQUESTA'", "'ITEM'", "'PREGUNTA'", 
-            "'RESPOSTA'", "'ALTERNATIVA'", "';'", "'->'", "'END'", "':'", 
-            "'?'" ]
+    literalNames = ["<INVALID>",
+                    "','", "'['", "']'", "'('", "')'", "'ENQUESTA'", "'ITEM'", "'PREGUNTA'",
+                    "'RESPOSTA'", "'ALTERNATIVA'", "';'", "'->'", "'END'", "':'",
+                    "'?'"]
 
-    symbolicNames = [ "<INVALID>",
-            "AID", "EID", "IID", "RID", "PID", "COMA", "CE", "CD", "PE", 
-            "PR", "ENQUESTA", "ELEMENT", "PREGUNTA", "RESPOSTA", "ALTERNATIVA", 
-            "PUNTCOMA", "FLETXA", "NUMERO", "FINAL", "PARAULES", "PUNTS", 
-            "SIGNEPREGUNTA", "WS" ]
+    symbolicNames = ["<INVALID>",
+                     "AID", "EID", "IID", "RID", "PID", "COMA", "CE", "CD", "PE",
+                     "PR", "ENQUESTA", "ELEMENT", "PREGUNTA", "RESPOSTA", "ALTERNATIVA",
+                     "PUNTCOMA", "FLETXA", "NUMERO", "FINAL", "PARAULES", "PUNTS",
+                     "SIGNEPREGUNTA", "WS"]
 
-    ruleNames = [ "AID", "EID", "IID", "RID", "PID", "COMA", "CE", "CD", 
-                  "PE", "PR", "ENQUESTA", "ELEMENT", "PREGUNTA", "RESPOSTA", 
-                  "ALTERNATIVA", "PUNTCOMA", "FLETXA", "NUMERO", "FINAL", 
-                  "PARAULES", "PUNTS", "SIGNEPREGUNTA", "WS" ]
+    ruleNames = ["AID", "EID", "IID", "RID", "PID", "COMA", "CE", "CD",
+                 "PE", "PR", "ENQUESTA", "ELEMENT", "PREGUNTA", "RESPOSTA",
+                 "ALTERNATIVA", "PUNTCOMA", "FLETXA", "NUMERO", "FINAL",
+                 "PARAULES", "PUNTS", "SIGNEPREGUNTA", "WS"]
 
     grammarFileName = "Enquestes.g"
 
-    def __init__(self, input=None, output:TextIO = sys.stdout):
+    def __init__(self, input=None, output: TextIO = sys.stdout):
         super().__init__(input, output)
         self.checkVersion("4.7.1")
         self._interp = LexerATNSimulator(self, self.atn, self.decisionsToDFA, PredictionContextCache())
         self._actions = None
         self._predicates = None
-
-

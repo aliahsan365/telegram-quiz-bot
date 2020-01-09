@@ -1,10 +1,11 @@
-import matplotlib.pyplot as plt
-from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters)
 import logging
-import pickle
-import numpy as np
-import random
 import os
+import pickle
+import random
+
+import matplotlib.pyplot as plt
+import numpy as np
+from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters)
 
 
 def load_graph():
@@ -181,8 +182,6 @@ def bar(bot, update, args):
         bot.send_message(chat_id=update.message.chat_id, text='💣')
 
 
-
-
 def quiz(bot, update, args, user_data):
     try:
         EID = args[0]
@@ -212,12 +211,14 @@ def quiz(bot, update, args, user_data):
     except Exception as e:
         print(e)
         bot.send_message(chat_id=update.message.chat_id, text='💣')
-#se actica con tecla
+
+
+# se actica con tecla
 def encuesta(bot, update, user_data):
     try:
         (next_node, opc) = nextpreg(bot, update, user_data)
         user_data['respuestas'][next_node] = opc
-        if  user_data['encuesta_final'] == 1:
+        if user_data['encuesta_final'] == 1:
             save_stats(store_stats(load_stats(), user_data['respuestas']))
             bot.send_message(chat_id=update.message.chat_id, text='final de la encuesta')
 
