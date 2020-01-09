@@ -22,23 +22,6 @@ def resposta(G,node):
     str_r = convert_resposta_str(r)
     print(str_r)
 
-class Routing():
-    def __init__(self,G):
-        self.G = G
-
-
-
-
-def comprobar_rango(G,node,opc):
-    esta = 0
-    for par in list(G.nodes[node]['content']):
-        if (par[0] == opc):
-            esta = 1
-    if (esta == 0):
-        # repetir hasta que responda bien!!
-        print('no esta; alternativa')
-    else:
-        print('esta ; alternativa')
 
 
 
@@ -126,7 +109,6 @@ def dfs_encuesta(G,EID):
                     stack.push(v)
         visited.append(c_node)
     return visited
-
 
 def load_graph():
     print('voy a cargar el grafo')

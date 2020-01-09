@@ -104,13 +104,13 @@ visitar las alternativas. El algoritmo se puede ejecutar usando:
 ```
 python algoritmo.py
 ```
-(NOTA: se debe estar en la carpeta bot para ejecuarlo y el pickle del grafo ha de estar generado en
+(NOTA1: se debe estar en la carpeta bot para ejecuarlo y el pickle del grafo ha de estar generado en
 la carpeta cl)
-
+(NOTA2: la interacion con el algoritmo es por consola, y no por telegram)
 # Problematica con el algoritmo de recorrido del bot
-En el archivo algoritmo.py de la carpeta bot podemos ver que si le pasamos un grafo , podemos obtener 
+En el archivo algoritmo.py de la carpeta bot, podemos ver que si le pasamos un grafo, podemos obtener 
 las preguntas de las encuestas, y en funcion de lo que hayamos metido como entrada
-por la entrada standar (consola) como respuestas a la pregunta, es capaz de ir dandonos las preguntas correctamente. El promblema es esencialmente
+por la entrada estandar (consola) como respuestas a la pregunta, es capaz de ir dandonos las preguntas correctamente. El promblema es esencialmente
 la intereacion con el bot, es decir, el modelo que se nos da para hacer bots en LP de ejemplo, no permite guardar estado automaticamente.
 Es decir, si lo printamos por telegram , acaba dando todas las pregutas por que hace el recorrido sin parar, a menos que lo hagamos por consola (entrada standard)
 
