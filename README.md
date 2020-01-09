@@ -24,10 +24,10 @@ https://gebakx.github.io/Python3/compiladors.html#2
 ###### RESUMEN PARA EJECUTAR TODO CON LA FINALIDAD DE PROBARLO.
 
 ```
-pip install -r requirements.txt // hay que estar en la root de la carpeta y en modo admin
-python test.py publicinput.txt // hay que estar en la carpeta cl
-python bot.py // hay que estar en la carpeta bot
-python algoritmo.py // si se quiere testear algoritmo de recorrido por consola
+pip install -r requirements.txt 
+python test.py publicinput.txt 
+python bot.py 
+python algoritmo.py 
 ```
 ## Tests
 
