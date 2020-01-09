@@ -1,7 +1,7 @@
-matplotlib==3.1.1
-networkx==2.4
-pickle==3.3
+matplotlib
+networkx
+pickle-mixin
 python-telegram-bot
-numpy==1.18.0
+numpy
 antlr4-python3-runtime
-autopep8==1.4.4
+autopep8

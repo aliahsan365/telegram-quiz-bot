@@ -3,82 +3,63 @@ from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters)
 import logging
 import pickle
 import numpy as np
-
 import random
 import os
 
-#####################GRAPH##############
 
 def load_graph():
     print('voy a cargar el grafo')
-    pickle_in = open("../cl/graph.pickle","rb")
+    pickle_in = open("../cl/graph.pickle", "rb")
     Gin = pickle.load(pickle_in)
     return Gin
+
 
 G = load_graph()
 
 
-#####################END GRAPH##########
-
-
-################################stats
-
-
-
 def save_stats(stats_save):
-
     pickle_out = open("stats.pickle", "wb")
-    pickle.dump(stats_save,pickle_out)
+    pickle.dump(stats_save, pickle_out)
     pickle_out.close()
 
 
 def load_stats():
-    pickle_in = open("stats.pickle","rb")
+    pickle_in = open("stats.pickle", "rb")
     stats = pickle.load(pickle_in)
     return stats
 
 
-#OK
 def get_nodos_preguntas(nodos):
     preguntas = []
-    for n in  nodos:
+    for n in nodos:
         if G.nodes[n]['tipo'] == "pregunta":
             preguntas.append(n)
     return preguntas
-#OK
-def get_dict_resposta_key(lpares):
 
+
+def get_dict_resposta_key(lpares):
     opcs = []
     for par in lpares:
         opcs.append(par[0])
     return dict.fromkeys(opcs, 0)
 
 
-
-
-
-#OK
 def get_pregunta_opc_respuestas(pnodes):
     pares_preguna_opcrespuesta = []
     for pid in pnodes:
         vecinop = list(G.successors(pid))
-        for vdv in vecinop :
+        for vdv in vecinop:
             if G[pid][vdv]['color'] == 'blue':
                 r = G.nodes[vdv]['content']
-                pares = (pid,r)
+                pares = (pid, r)
                 pares_preguna_opcrespuesta.append(pares)
     return pares_preguna_opcrespuesta
 
 
-
-def store_stats(stats ,respuestas):
-
+def store_stats(stats, respuestas):
     for r in respuestas:
         stats[r][str(respuestas[r])] = stats[r][str(respuestas[r])] + 1
     return stats
-
-
-
 
 
 def ini_stats():
@@ -93,33 +74,22 @@ def ini_stats():
     save_stats(stats)
 
 
-
-############################END STATS################################
-
-
-######################PRETTY PRINT################
 def convert_resposta_str(resposta):
     str = ''
     for par in resposta:
-        str = str +  par[0] + ': ' + par[1] + '\n'
+        str = str + par[0] + ': ' + par[1] + '\n'
     return str
 
 
-
-def pregunta(G,node):
+def pregunta(G, node):
     p = G.nodes[node]['content']
     return p
 
 
-def resposta(G,node):
+def resposta(G, node):
     r = G.nodes[node]['content']
     str_r = convert_resposta_str(r)
-    print(str_r)
     return str_r
-######################END PRETTY PRINT#############
-
-###########HANDLER FUNCTIONS ####################
-
 
 
 def start(bot, update):
@@ -128,6 +98,7 @@ def start(bot, update):
     except Exception as e:
         print(e)
         bot.send_message(chat_id=update.message.chat_id, text='💣')
+
 
 def help(bot, update):
     try:
@@ -142,6 +113,7 @@ def help(bot, update):
     except Exception as e:
         print(e)
         bot.send_message(chat_id=update.message.chat_id, text='💣')
+
 
 def author(bot, update):
     try:
@@ -160,19 +132,15 @@ def report(bot, update):
             for op in stats[e]:
                 text += e + '   ' + op + '   ' + str(stats[e][op]) + '\n'
         bot.send_message(chat_id=update.message.chat_id, text=text)
-
-
     except Exception as e:
         print(e)
         bot.send_message(chat_id=update.message.chat_id, text='💣')
 
-def pie(bot,update,args):
+
+def pie(bot, update, args):
     try:
         PID = args[0]
-        bot.send_message(chat_id=update.message.chat_id, text=PID)
-
         stats = load_stats()
-        bot.send_message(chat_id=update.message.chat_id, text=stats)
         filename = "%d.png" % random.randint(0000000, 9999999)
         labels = []  # answer options
         for op in stats[PID].keys():
@@ -180,18 +148,17 @@ def pie(bot,update,args):
         values = []  # answer values
         for val in stats[PID].values():
             values.append(val)
-        plt.pie(values,labels=labels, autopct='%1.1f%%', shadow=True, startangle=90)
+        plt.pie(values, labels=labels, autopct='%1.1f%%', shadow=True, startangle=90)
         plt.savefig(filename, bbox_inches='tight')
         plt.clf()
         bot.send_photo(chat_id=update.message.chat_id, photo=open(filename, 'rb'))
         os.remove(filename)
-
-
     except Exception as e:
         print(e)
         bot.send_message(chat_id=update.message.chat_id, text='💣')
 
-def bar(bot,update,args):
+
+def bar(bot, update, args):
     try:
         PID = args[0]
         stats = load_stats()
@@ -212,29 +179,20 @@ def bar(bot,update,args):
     except Exception as e:
         print(e)
         bot.send_message(chat_id=update.message.chat_id, text='💣')
-######encuesta
 
-def check_end(nodo,idencuesta):
-
-    vecinos = G.successors(nodo)
-    for v in vecinos:
-        if G[nodo][v]['color'] == 'black':
-            if G[nodo][v]['senyal'] == idencuesta:
-                return True
-    return False
 
 
 
 def quiz(bot, update, args, user_data):
     try:
         EID = args[0]
-        bot.send_message(chat_id=update.message.chat_id, text='Enquesta '+ EID)
-        user_data['encuesta_acabada'] = 0
+        bot.send_message(chat_id=update.message.chat_id, text='Enquesta ' + EID)
+
+        user_data['encuesta_final'] = 0
         user_data['encuesta'] = EID
         user_data['visited'] = [EID]
-        l =  list(G.successors(EID))
+        l = list(G.successors(EID))
         p1 = l[0]
-        print(p1)
         user_data['currentnode'] = p1
         user_data['final_encuesta'] = 0
         user_data['respuestas'] = dict()
@@ -245,42 +203,30 @@ def quiz(bot, update, args, user_data):
                 r = resposta(G, vdv)
                 text = EID + '> ' + p + '\n' + r
                 bot.send_message(chat_id=update.message.chat_id, text=text)
-                if (check_end(user_data['currentnode'], user_data['encuesta'])):
-                    user_data['encuesta_acabada'] = 1
+
                 opc = update.message.text
                 user_data['respuestas'][p1] = opc
                 user_data['visited'].append(p1)
+            if (vdv == 'END' and G[p1][vdv]['senyal'] == user_data['encuesta']):
+                user_data['encuesta_final'] = 1
     except Exception as e:
         print(e)
         bot.send_message(chat_id=update.message.chat_id, text='💣')
-
-
-
-
-
-def encuesta(bot,update,user_data):
+#se actica con tecla
+def encuesta(bot, update, user_data):
     try:
-        (next_node,opc) = nextpreg(bot,update,user_data)
+        (next_node, opc) = nextpreg(bot, update, user_data)
         user_data['respuestas'][next_node] = opc
-        save_stats(store_stats(load_stats(),user_data['respuestas']))
-
+        if  user_data['encuesta_final'] == 1:
+            save_stats(store_stats(load_stats(), user_data['respuestas']))
+            bot.send_message(chat_id=update.message.chat_id, text='final de la encuesta')
 
     except Exception as e:
         print(e)
         bot.send_message(chat_id=update.message.chat_id, text='💣')
 
 
-
-
-
-
-
-
-
-
-
-def nextpreg(bot,update,user_data):
-
+def nextpreg(bot, update, user_data):
     c_node = user_data['currentnode']
     vecinos = list(G.successors(c_node))
     next_node = 'next'
@@ -293,36 +239,21 @@ def nextpreg(bot,update,user_data):
                     for vdv in vecinos_del_vecino:
                         if G[v][vdv]['color'] == 'blue':
                             p = pregunta(G, v)
-                            r =  resposta(G, vdv)
+                            r = resposta(G, vdv)
                             text = user_data['encuesta'] + '> ' + p + '\n' + r
                             bot.send_message(chat_id=update.message.chat_id, text=text)
-
                             opc = update.message.text
-                            if (check_end(user_data['currentnode'],user_data['encuesta'])):
-                                user_data['encuesta_acabada'] =  1
-
-
-                            next_node = v
 
                             user_data['currentnode'] = v
                             user_data['visited'].append(c_node)
-    return (c_node,opc)
+        if (v == 'END' and G[c_node][v]['senyal'] == user_data['encuesta']):
+            user_data['encuesta_final'] = 1
 
-
-
-
-
-####################END QUIZ###############
-
-
-
-
-
+    return (c_node, opc)
 
 
 def main():
     ini_stats()
-
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
     TOKEN = open('token.txt').read().strip()
     updater = Updater(token=TOKEN)
@@ -333,9 +264,10 @@ def main():
     dispatcher.add_handler(CommandHandler('report', report))
     dispatcher.add_handler(CommandHandler('pie', pie, pass_args=True))
     dispatcher.add_handler(CommandHandler('bar', bar, pass_args=True))
-    dispatcher.add_handler(CommandHandler('quiz', quiz, pass_args=True,pass_user_data = True))
+    dispatcher.add_handler(CommandHandler('quiz', quiz, pass_args=True, pass_user_data=True))
     dispatcher.add_handler(MessageHandler(Filters.text, encuesta, pass_user_data=True))
     updater.start_polling()
+
 
 if __name__ == '__main__':
     main()

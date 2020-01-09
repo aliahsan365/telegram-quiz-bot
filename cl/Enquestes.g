@@ -11,7 +11,7 @@ element: IID PUNTS ELEMENT relacio*;
 relacio: PID FLETXA RID ;
 
 
-alternativa: AID  PUNTS ALTERNATIVA implications;
+alternativa: AID PUNTS ALTERNATIVA implications;
 implications: IID CE blocrespostaelement CD;
 blocrespostaelement: (respostaelement COMA|respostaelement)*;
 respostaelement: PE NUMERO COMA IID PR;
