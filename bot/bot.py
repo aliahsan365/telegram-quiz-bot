@@ -1,6 +1,3 @@
-import telegram
-from telegram.ext import Updater
-from telegram.ext import CommandHandler
 import matplotlib.pyplot as plt
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters)
 import logging
@@ -180,7 +177,6 @@ def pie(bot,update,args):
         labels = []  # answer options
         for op in stats[PID].keys():
             labels.append(op)
-        bot.send_message(chat_id=update.message.chat_id, text=labels)
         values = []  # answer values
         for val in stats[PID].values():
             values.append(val)
@@ -216,31 +212,47 @@ def bar(bot,update,args):
     except Exception as e:
         print(e)
         bot.send_message(chat_id=update.message.chat_id, text='💣')
+######encuesta
+
+def check_end(nodo,idencuesta):
+
+    vecinos = G.successors(nodo)
+    for v in vecinos:
+        if G[nodo][v]['color'] == 'black':
+            if G[nodo][v]['senyal'] == idencuesta:
+                return True
+    return False
+
 
 
 def quiz(bot, update, args, user_data):
     try:
         EID = args[0]
+        bot.send_message(chat_id=update.message.chat_id, text='Enquesta '+ EID)
+        user_data['encuesta_acabada'] = 0
         user_data['encuesta'] = EID
         user_data['visited'] = [EID]
         l =  list(G.successors(EID))
         p1 = l[0]
         print(p1)
         user_data['currentnode'] = p1
+        user_data['final_encuesta'] = 0
         user_data['respuestas'] = dict()
         vp1 = list(G.successors(p1))
         for vdv in vp1:
             if G[p1][vdv]['color'] == 'blue':
                 p = pregunta(G, p1)
                 r = resposta(G, vdv)
-                bot.send_message(chat_id=update.message.chat_id, text=p)
-                bot.send_message(chat_id=update.message.chat_id, text=str(r))
+                text = EID + '> ' + p + '\n' + r
+                bot.send_message(chat_id=update.message.chat_id, text=text)
+                if (check_end(user_data['currentnode'], user_data['encuesta'])):
+                    user_data['encuesta_acabada'] = 1
                 opc = update.message.text
                 user_data['respuestas'][p1] = opc
                 user_data['visited'].append(p1)
     except Exception as e:
         print(e)
-        bot.send_message(chat_id=update.message.chat_id, text='??')
+        bot.send_message(chat_id=update.message.chat_id, text='💣')
 
 
 
@@ -249,23 +261,18 @@ def quiz(bot, update, args, user_data):
 def encuesta(bot,update,user_data):
     try:
         (next_node,opc) = nextpreg(bot,update,user_data)
-        if (next_node == 'END'):
+        user_data['respuestas'][next_node] = opc
+        save_stats(store_stats(load_stats(),user_data['respuestas']))
 
-            bot.send_message(chat_id=update.message.chat_id, text='gracias por contestar, hijo de puta!')
-        else:
-            user_data['respuestas'][next_node] = opc
-            bot.send_message(chat_id=update.message.chat_id, text=str(user_data['respuestas']))
-            save_stats(store_stats(load_stats(),user_data['respuestas']))
-            print(load_stats())
 
     except Exception as e:
         print(e)
-        bot.send_message(chat_id=update.message.chat_id, text='??')
+        bot.send_message(chat_id=update.message.chat_id, text='💣')
 
 
 
 
-########################## END HANDLER FUNCTIONS#########################
+
 
 
 
@@ -278,11 +285,8 @@ def nextpreg(bot,update,user_data):
     vecinos = list(G.successors(c_node))
     next_node = 'next'
     opc = update.message.text
-
-
     for v in vecinos:
         if not (v in user_data['visited']):
-
             if (G[c_node][v]['color'] == 'black' and G[c_node][v]['senyal'] == user_data['encuesta']):
                 if G.nodes[v]['tipo'] == "pregunta":
                     vecinos_del_vecino = list(G.successors(v))
@@ -290,29 +294,31 @@ def nextpreg(bot,update,user_data):
                         if G[v][vdv]['color'] == 'blue':
                             p = pregunta(G, v)
                             r =  resposta(G, vdv)
-                            bot.send_message(chat_id=update.message.chat_id, text=p)
-                            bot.send_message(chat_id=update.message.chat_id, text=str(r))
+                            text = user_data['encuesta'] + '> ' + p + '\n' + r
+                            bot.send_message(chat_id=update.message.chat_id, text=text)
+
                             opc = update.message.text
+                            if (check_end(user_data['currentnode'],user_data['encuesta'])):
+                                user_data['encuesta_acabada'] =  1
+
 
                             next_node = v
 
                             user_data['currentnode'] = v
                             user_data['visited'].append(c_node)
-
     return (c_node,opc)
 
 
 
 
 
-
-
-#################### END LOGICS
-
+####################END QUIZ###############
 
 
 
-########################## END HANDLER FUNCTIONS#########################
+
+
+
 
 def main():
     ini_stats()

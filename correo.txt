@@ -1,3 +1,0 @@
-1.estrucutras para guardar cuando recorres el arbol con visitor.*
-2.como guardar un objeto o una lista de cosas en un nodo del grafo*
-3.las alterntivas como se gestionan en el recorido el bot , hace falt aun dfs aparte.

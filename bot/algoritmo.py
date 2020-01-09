@@ -81,7 +81,7 @@ def dfs_alternativa(G,PID,opc):
                             nodos_respondidos.append(v)
                             pregunta(G,v)
                             resposta(G,vdv)
-
+                            print('introduce opcion de respuesta:')
                             opc = input()
                             auxopc = opc
 
@@ -113,6 +113,7 @@ def dfs_encuesta(G,EID):
                             if G[v][vdv]['color'] == 'blue':
                                 pregunta(G,v)
                                 resposta(G,vdv)
+                                print('introduce opcion de respuesta:')
                                 opc = input()
                         for vdv in vecinos_del_vecino:
                             if G[v][vdv]['color'] == 'green':
@@ -135,7 +136,7 @@ def load_graph():
 
 G = load_graph()
 
-#E es el nodo inciail de la encuesta
+#E es el nodo inciail de la encuesta con publicinput.txt usado para obtener el grafo
 dfs_encuesta(G,'E')
-#si input multiencuestahabilitaresto.
+#si input multiencuestahabilitaresto descomentar esto.
 #dfs_encuesta(G,'E3')
