@@ -6,6 +6,9 @@ from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters)
 import logging
 import pickle
 
+import random
+import os
+
 #####################GRAPH##############
 
 def load_graph():
@@ -123,9 +126,6 @@ def resposta(G,node):
 
 def start(bot, update):
     try:
-        print('loaded stats from start')
-        print(load_stats())
-
         bot.send_message(chat_id=update.message.chat_id, text="Inicia la conversa amb el Bot.")
     except Exception as e:
         print(e)
@@ -156,8 +156,14 @@ def author(bot, update):
 
 def report(bot, update):
     try:
-        bot.send_message(chat_id=update.message.chat_id, text="Ali Muhammad Shiekh.")
-        bot.send_message(chat_id=update.message.chat_id, text="ali.muhammad@est.fib.upc.edu")
+        stats = load_stats()
+        text = 'pregunta valor resposta \n'
+        for e in stats:
+            for op in stats[e]:
+                text += e + '   ' + op + '   ' + str(stats[e][op]) + '\n'
+        bot.send_message(chat_id=update.message.chat_id, text=text)
+
+
     except Exception as e:
         print(e)
         bot.send_message(chat_id=update.message.chat_id, text='💣')
@@ -166,6 +172,21 @@ def pie(bot,update,args):
     try:
         PID = args[0]
         bot.send_message(chat_id=update.message.chat_id, text=PID)
+
+        stats = load_stats()
+        bot.send_message(chat_id=update.message.chat_id, text=stats)
+        filename = "%d.png" % random.randint(0000000, 9999999)
+        labels = [op for op in stats[PID].keys()]  # answer options
+        bot.send_message(chat_id=update.message.chat_id, text=labels)
+        values = [val for val in stats[PID].values()]  # answer values
+        explode = [0.1 for v in values]
+        plt.pie(values, explode=explode, labels=labels, autopct='%1.1f%%', shadow=True, startangle=90)
+        plt.savefig(filename, bbox_inches='tight')
+        plt.clf()
+        bot.send_photo(chat_id=update.message.chat_id, photo=open(filename, 'rb'))
+        os.remove(filename)
+
+
     except Exception as e:
         print(e)
         bot.send_message(chat_id=update.message.chat_id, text='💣')
@@ -185,6 +206,7 @@ def quiz(bot, update, args, user_data):
         user_data['visited'] = [EID]
         l =  list(G.successors(EID))
         p1 = l[0]
+        print(p1)
         user_data['currentnode'] = p1
         user_data['respuestas'] = dict()
         vp1 = list(G.successors(p1))
@@ -197,10 +219,6 @@ def quiz(bot, update, args, user_data):
                 opc = update.message.text
                 user_data['respuestas'][p1] = opc
                 user_data['visited'].append(p1)
-        user_data['stack_encuesta'] = Stack()
-        user_data['stack_alternativa'] = Stack()
-        user_data['estadisticas'] = dict()
-        user_data['currentnode_alternativa'] = 'A'
     except Exception as e:
         print(e)
         bot.send_message(chat_id=update.message.chat_id, text='💣')
