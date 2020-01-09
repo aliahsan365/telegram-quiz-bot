@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters)
 import logging
 import pickle
+import numpy as np
 
 import random
 import os
@@ -176,11 +177,14 @@ def pie(bot,update,args):
         stats = load_stats()
         bot.send_message(chat_id=update.message.chat_id, text=stats)
         filename = "%d.png" % random.randint(0000000, 9999999)
-        labels = [op for op in stats[PID].keys()]  # answer options
+        labels = []  # answer options
+        for op in stats[PID].keys():
+            labels.append(op)
         bot.send_message(chat_id=update.message.chat_id, text=labels)
-        values = [val for val in stats[PID].values()]  # answer values
-        explode = [0.1 for v in values]
-        plt.pie(values, explode=explode, labels=labels, autopct='%1.1f%%', shadow=True, startangle=90)
+        values = []  # answer values
+        for val in stats[PID].values():
+            values.append(val)
+        plt.pie(values,labels=labels, autopct='%1.1f%%', shadow=True, startangle=90)
         plt.savefig(filename, bbox_inches='tight')
         plt.clf()
         bot.send_photo(chat_id=update.message.chat_id, photo=open(filename, 'rb'))
@@ -194,7 +198,21 @@ def pie(bot,update,args):
 def bar(bot,update,args):
     try:
         PID = args[0]
-        bot.send_message(chat_id=update.message.chat_id, text=PID)
+        stats = load_stats()
+        filename = "%d.png" % random.randint(0000000, 9999999)
+        labels = []
+        for op in stats[PID].keys():
+            labels.append(op)
+        values = []  # answer values
+        for val in stats[PID].values():
+            values.append(val)
+        plt.bar(labels, values, align='center', alpha=1)
+        y_pos = np.arange(len(labels))
+        plt.xticks(y_pos, labels)
+        plt.savefig(filename, bbox_inches='tight')
+        plt.clf()
+        bot.send_photo(chat_id=update.message.chat_id, photo=open(filename, 'rb'))
+        os.remove(filename)
     except Exception as e:
         print(e)
         bot.send_message(chat_id=update.message.chat_id, text='💣')
@@ -202,23 +220,26 @@ def bar(bot,update,args):
 
 
 
-
-
 def quiz(bot, update, args, user_data):
     try:
         EID = args[0]
-        bot.send_message(chat_id=update.message.chat_id, text=EID)
-        user_data['save'] = 0
-        user_data['nodoencuesta'] = EID
+        user_data['encuesta'] = EID
         user_data['visited'] = [EID]
-        user_data['nodoactual'] = EID
+        l =  list(G.successors(EID))
+        p1 = l[0]
+        print(p1)
+        user_data['currentnode'] = p1
         user_data['respuestas'] = dict()
-
-        primera_pregunta(bot,update,user_data)
-
-
-
-
+        vp1 = list(G.successors(p1))
+        for vdv in vp1:
+            if G[p1][vdv]['color'] == 'blue':
+                p = pregunta(G, p1)
+                r = resposta(G, vdv)
+                bot.send_message(chat_id=update.message.chat_id, text=p)
+                bot.send_message(chat_id=update.message.chat_id, text=str(r))
+                opc = update.message.text
+                user_data['respuestas'][p1] = opc
+                user_data['visited'].append(p1)
     except Exception as e:
         print(e)
         bot.send_message(chat_id=update.message.chat_id, text='💣')
@@ -229,7 +250,15 @@ def quiz(bot, update, args, user_data):
 
 def encuesta(bot,update,user_data):
     try:
-        formular_pregunta(bot,update,user_data)
+        (next_node,opc) = nextpreg(bot,update,user_data)
+        if (next_node == 'END'):
+
+            bot.send_message(chat_id=update.message.chat_id, text='gracias por contestar, hijo de puta!')
+        else:
+            user_data['respuestas'][next_node] = opc
+            bot.send_message(chat_id=update.message.chat_id, text=str(user_data['respuestas']))
+            save_stats(store_stats(load_stats(),user_data['respuestas']))
+            print(load_stats())
 
     except Exception as e:
         print(e)
@@ -242,54 +271,64 @@ def encuesta(bot,update,user_data):
 
 
 ######LOGICS ###################
+class Stack:
+    def __init__(self):
+        self.items = []
 
-def primera_pregunta(bot,update,user_data):
-    eid = user_data['nodoencuesta']
-    vecinos_enq = list(G.successors(eid))
-    for p in vecinos_enq:
-        if G.nodes[p]['tipo'] == 'pregunta':
-            vecinos_p = list(G.successors(p))
-            for vp in vecinos_p:
-                if G[p][vp]['color'] == 'blue':
-                    preg = pregunta(G,p)
-                    resp = resposta(G,vp)
-                    text = eid +'> ' + preg + '\n' + resp
-                    bot.send_message(chat_id=update.message.chat_id, text=text)
-                    opc = update.message.text
-                    print(opc)
-                    user_data['respuestas'][p] = opc
-        user_data['nodoactual'] = p
-        print('nodo actual ' + user_data['nodoactual'])
-    return p
+    def isEmpty(self):
+        return self.items == []
 
+    def push(self, item):
+        self.items.append(item)
 
+    def pop(self):
+        return self.items.pop()
 
+    def top(self):
+        return self.items[len(self.items) - 1]
 
-def formular_pregunta(bot,update,user_data):
-    print('estpy dentro '  +  user_data['nodoactual'])
-    cp = user_data['nodoactual']
-    vecinos_cp = list(G.successors(cp))
-    for ncp in vecinos_cp:
-        print('entrroo en preguntaaa ' + ncp)
-        if G[cp][ncp]['color'] == 'black' and G[cp][ncp]['senyal'] == user_data['nodoencuesta']:
-            print('entrroo en preguntaaa')
-            vecino_ncp = list(G.successors(ncp))
-            for vncp in vecino_ncp:
-                if G[ncp][vncp]['color'] == 'blue':
-                    preg = pregunta(G,ncp)
-                    resp = resposta(G,vncp)
-                    text = ncp + '> ' + preg + '\n' + resp
-                    bot.send_message(chat_id=update.message.chat_id, text=text)
-                    opc = update.message.text
-                    user_data['respuestas'][ncp] = opc
-            user_data['nodoactual'] = ncp
-        return ncp
+    def size(self):
+        return len(self.items)
 
 
 
 
+def nextpreg(bot,update,user_data):
+
+    c_node = user_data['currentnode']
+    vecinos = list(G.successors(c_node))
+    next_node = 'next'
+    opc = update.message.text
 
 
+    for v in vecinos:
+        if not (v in user_data['visited']):
+
+            if (G[c_node][v]['color'] == 'black' and G[c_node][v]['senyal'] == user_data['encuesta']):
+                if G.nodes[v]['tipo'] == "pregunta":
+                    vecinos_del_vecino = list(G.successors(v))
+                    for vdv in vecinos_del_vecino:
+                        if G[v][vdv]['color'] == 'blue':
+                            p = pregunta(G, v)
+                            r =  resposta(G, vdv)
+                            bot.send_message(chat_id=update.message.chat_id, text=p)
+                            bot.send_message(chat_id=update.message.chat_id, text=str(r))
+                            opc = update.message.text
+
+                            next_node = v
+
+                            user_data['currentnode'] = v
+                            user_data['visited'].append(c_node)
+
+    return (c_node,opc)
+
+
+
+
+
+
+
+#################### END LOGICS
 
 
 

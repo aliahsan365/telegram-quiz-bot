@@ -66,22 +66,30 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+Git
 
 ## Authors
 
-* **Ali Muhammad Shiekh** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Ali Muhammad Shiekh** 
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-## Suposiciones
-* Todas las encuestas van al END.
+## Suposiciones y aclaraciones
+* Todas las encuestas van al nodo END.
 * Encuesta puede tener como ID : E, E0, E1...En general, E[0-9]*
 * Pregunta, Respuesta, Item y Alternativa tienen P1,R1,I1,A1...En general, LETRAINICIAL[0-9]+
 * Las opciones de alternativa pueden tener los pares (numero,item), sin coma o con coma.
 * Dos o mas preguntas pueden tener la misma respuesta.
 * Una pregunta tiene exactamente una respuesta.
+* Se imprimien en el reporte todas las preguntas con sus opciones, es decir, no depende que hayan sido selecionadas como
+como minimo una vez.
+* Mi lenguaje no contempla la opcion para tildes
+* Depende del sistema operativo la entrada la coje de una sola linea o reconoce bien los EOF por ese motivo he
+dejado dos entrada publicas uno que es input (la publica sin acentos) y inputoneline(publica sin acentos y en una sola
+linea todo)
+* La practica esta pensada para que en un mismo grafo haya mas de una encuesta y que hay mas de una alternativa que te
+lleve a otra alternativa si contestas una cierta opcion, es decir, la practica es multiencuesta y multilaternativas.
+Para ver esto tenemos la oneline3e y oneline2a.
